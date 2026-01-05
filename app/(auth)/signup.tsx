@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Keyboard,
@@ -18,6 +19,8 @@ const signup = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const router = useRouter();
 
     return (
         <LinearGradient
@@ -93,7 +96,7 @@ const signup = () => {
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.footer}>
+                            <TouchableOpacity style={styles.footer} onPress={() => router.push('/login')}>
                                 <Text style={styles.footerText}>
                                     Already have an account? <Text style={styles.signupText}>Login</Text>
                                 </Text>
@@ -110,6 +113,7 @@ export default signup;
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 24,
         justifyContent: "center",
     },

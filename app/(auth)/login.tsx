@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Keyboard,
@@ -15,15 +16,15 @@ const login = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
+    const router = useRouter();
+
     return (
         <LinearGradient
             colors={['#0D1B2A', '#1B3B5D']}
             style={{ flex: 1 }}
         >
             <SafeAreaView style={{ flex: 1 }}>
-                {/* Dismiss keyboard on outside press */}
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    {/* Moves inputs above keyboard */}
                     <KeyboardAvoidingView
                         style={styles.container}
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -62,7 +63,7 @@ const login = () => {
                             </View>
                         </View>
 
-                        <TouchableOpacity style={styles.footer}>
+                        <TouchableOpacity style={styles.footer} onPress={() => router.push('/signup')}>
                             <Text style={styles.footerText}>
                                 Don't have an account? <Text style={styles.signupText}>Sign up</Text>
                             </Text>
