@@ -1,3 +1,5 @@
+import { loginUser } from '@/services/authService';
+import { showToast } from '@/utils/toast';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from 'expo-router';
@@ -15,8 +17,41 @@ const login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    const resetForm = () => {
+        setEmail("");
+        setPassword("");
+    };
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            return showToast('error', 'Please fill in all fields');
+        }
+
+        try {
+            setLoading(true);
+
+            const userCredential = await loginUser(email, password);
+            console.log("Logged in:", userCredential.user.email);
+            resetForm();
+
+            // router.replace("/(tabs)");
+        } catch (err: any) {
+            console.log(err);
+
+            if (err.code === "auth/invalid-credential") {
+                showToast('error', 'Invalid email or password');
+            } else if (err.code === "auth/invalid-email") {
+                showToast('error', 'Invalid email format');
+            } else {
+                showToast('error', 'Something went wrong. Try again.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <LinearGradient
@@ -63,6 +98,18 @@ const login = () => {
                             </View>
                         </View>
 
+                        {/* Login Button */}
+                        <TouchableOpacity
+                            style={[styles.loginBtn, loading && { opacity: 0.7 }]}
+                            onPress={handleLogin}
+                            disabled={loading}
+                        >
+                            <Text style={styles.loginText}>
+                                {loading ? "Logging in..." : "Login"}
+                            </Text>
+                        </TouchableOpacity>
+
+                        {/* Footer */}
                         <TouchableOpacity style={styles.footer} onPress={() => router.push('/signup')}>
                             <Text style={styles.footerText}>
                                 Don't have an account? <Text style={styles.signupText}>Sign up</Text>
@@ -83,12 +130,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 24,
     },
+
     title: {
         fontSize: 36,
         fontWeight: "bold",
         color: "#fff",
         textAlign: "center",
     },
+
     subtitle: {
         fontSize: 20,
         color: "#f0f0f0",
@@ -96,9 +145,11 @@ const styles = StyleSheet.create({
         marginTop: 8,
         marginBottom: 32,
     },
+
     inputWrapper: {
         marginTop: 16,
     },
+
     input: {
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
         borderRadius: 12,
@@ -109,25 +160,44 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.4)',
     },
+
     passwordContainer: {
         position: 'relative',
         justifyContent: 'center',
     },
+
     eyeIcon: {
         position: 'absolute',
         right: 16,
         top: 28,
     },
+
     footer: {
         marginTop: 32,
         alignItems: 'center',
     },
+
     footerText: {
         color: '#fff',
         fontSize: 16,
     },
+
     signupText: {
         color: '#00cfff',
         fontWeight: 'bold',
-    }
+    },
+
+    loginBtn: {
+        backgroundColor: "#00cfff",
+        marginTop: 32,
+        padding: 16,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+
+    loginText: {
+        color: "#0D1B2A",
+        fontSize: 18,
+        fontWeight: "bold",
+    },
 });

@@ -1,3 +1,5 @@
+import { signupUser } from '@/services/authService';
+import { showToast } from '@/utils/toast';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from 'expo-router';
@@ -12,15 +14,59 @@ import {
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const signup = () => {
+const Signup = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const router = useRouter();
+
+    const resetForm = () => {
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setShowPassword(false);
+        setShowConfirmPassword(false);
+    };
+
+    const handleSignup = async () => {
+        if (!name || !email || !password || !confirmPassword) {
+            return showToast('error', 'Please fill in all fields');
+        }
+
+        if (password !== confirmPassword) {
+            return showToast('error', 'Passwords do not match');
+        }
+
+        try {
+            setLoading(true);
+
+            await signupUser(name, email, password);
+            showToast('success', 'Account Created Successfully!');
+
+            resetForm();
+            router.replace("/login");
+        } catch (err: any) {
+            console.log(err);
+
+            if (err.code === "auth/email-already-in-use") {
+                showToast('error', 'Email already in use');
+            } else if (err.code === "auth/invalid-email") {
+                showToast('error', 'Invalid email format');
+            } else if (err.code === "auth/weak-password") {
+                showToast('error', 'Password should be at least 6 characters');
+            } else {
+                showToast('error', 'Something went wrong. Try again.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <LinearGradient
@@ -53,6 +99,7 @@ const signup = () => {
                                     style={styles.input}
                                 />
 
+                                {/* Password */}
                                 <View style={styles.passwordContainer}>
                                     <TextInput
                                         placeholder="Password"
@@ -74,6 +121,7 @@ const signup = () => {
                                     </TouchableOpacity>
                                 </View>
 
+                                {/* Confirm Password */}
                                 <View style={styles.passwordContainer}>
                                     <TextInput
                                         placeholder="Confirm Password"
@@ -96,6 +144,18 @@ const signup = () => {
                                 </View>
                             </View>
 
+                            {/* Signup Button */}
+                            <TouchableOpacity
+                                style={[styles.signupBtn, loading && { opacity: 0.7 }]}
+                                onPress={handleSignup}
+                                disabled={loading}
+                            >
+                                <Text style={styles.signupTextBtn}>
+                                    {loading ? "Signing up..." : "Sign Up"}
+                                </Text>
+                            </TouchableOpacity>
+
+                            {/* Footer */}
                             <TouchableOpacity style={styles.footer} onPress={() => router.push('/login')}>
                                 <Text style={styles.footerText}>
                                     Already have an account? <Text style={styles.signupText}>Login</Text>
@@ -109,7 +169,7 @@ const signup = () => {
     )
 }
 
-export default signup;
+export default Signup;
 
 const styles = StyleSheet.create({
     container: {
@@ -151,6 +211,18 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 16,
         top: 28,
+    },
+    signupBtn: {
+        backgroundColor: "#00cfff",
+        marginTop: 32,
+        padding: 16,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+    signupTextBtn: {
+        color: "#0D1B2A",
+        fontSize: 18,
+        fontWeight: "bold",
     },
     footer: {
         marginTop: 32,
