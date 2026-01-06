@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC_h6juz6hec4qfqs7O3ekG44AyH6ga8Jc",
-    authDomain: "fitwear-d5bae.firebaseapp.com",
-    projectId: "fitwear-d5bae",
-    storageBucket: "fitwear-d5bae.firebasestorage.app",
-    messagingSenderId: "1096148286322",
-    appId: "1:1096148286322:web:c7210ff922963f8eecbbeb"
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY!,
+    authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID!,
+    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+    appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID!
 };
 
 const app = initializeApp(firebaseConfig);
