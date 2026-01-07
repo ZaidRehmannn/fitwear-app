@@ -37,7 +37,7 @@ const login = () => {
             console.log("Logged in:", userCredential.user.email);
             resetForm();
 
-            // router.replace("/(tabs)");
+            router.replace("/(tabs)/home");
         } catch (err: any) {
             console.log(err);
 

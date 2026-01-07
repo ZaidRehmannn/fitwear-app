@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Signup = () => {
+const signup = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -169,7 +169,7 @@ const Signup = () => {
     )
 }
 
-export default Signup;
+export default signup;
 
 const styles = StyleSheet.create({
     container: {
