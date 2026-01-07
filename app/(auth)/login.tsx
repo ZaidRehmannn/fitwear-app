@@ -1,24 +1,29 @@
+import AuthButton from '@/components/Auth/AuthButton';
+import AuthFields, { Field } from '@/components/Auth/AuthFields';
+import AuthFooter from '@/components/Auth/AuthFooter';
+import AuthHeader from '@/components/Auth/AuthHeader';
 import { loginUser } from '@/services/authService';
 import { showToast } from '@/utils/toast';
-import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
     Keyboard,
     KeyboardAvoidingView, Platform,
-    StyleSheet, Text, TextInput, TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
+    TouchableWithoutFeedback
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    const loginFields: Field[] = [
+        { name: "email", placeholder: "Email", value: email, onChangeText: setEmail },
+        { name: "password", placeholder: "Password", secure: true, value: password, onChangeText: setPassword },
+    ];
 
     const resetForm = () => {
         setEmail("");
@@ -61,60 +66,28 @@ const login = () => {
             <SafeAreaView style={{ flex: 1 }}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <KeyboardAvoidingView
-                        style={styles.container}
+                        style={{ flex: 1, justifyContent: "center", padding: 24 }}
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
                     >
-                        <Text style={styles.title}>FitWear</Text>
-                        <Text style={styles.subtitle}>Welcome back</Text>
+                        {/* Header */}
+                        <AuthHeader title='FitWear' subtitle='Welcome back' />
 
-                        <View style={styles.inputWrapper}>
-                            <TextInput
-                                placeholder="Email"
-                                placeholderTextColor="#ddd"
-                                value={email}
-                                onChangeText={setEmail}
-                                style={styles.input}
-                            />
+                        {/* Input Fields */}
+                        <AuthFields fields={loginFields} />
 
-                            <View style={styles.passwordContainer}>
-                                <TextInput
-                                    placeholder="Password"
-                                    placeholderTextColor="#ddd"
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    secureTextEntry={!showPassword}
-                                    style={[styles.input, { paddingRight: 50 }]}
-                                />
-                                <TouchableOpacity
-                                    style={styles.eyeIcon}
-                                    onPress={() => setShowPassword(!showPassword)}
-                                >
-                                    <Ionicons
-                                        name={showPassword ? "eye" : "eye-off"}
-                                        size={24}
-                                        color="#fff"
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        {/* Login Button */}
-                        <TouchableOpacity
-                            style={[styles.loginBtn, loading && { opacity: 0.7 }]}
+                        {/* Button */}
+                        <AuthButton
+                            title={loading ? "Logging in..." : "Login"}
                             onPress={handleLogin}
-                            disabled={loading}
-                        >
-                            <Text style={styles.loginText}>
-                                {loading ? "Logging in..." : "Login"}
-                            </Text>
-                        </TouchableOpacity>
+                            loading={loading}
+                        />
 
                         {/* Footer */}
-                        <TouchableOpacity style={styles.footer} onPress={() => router.push('/signup')}>
-                            <Text style={styles.footerText}>
-                                Don't have an account? <Text style={styles.signupText}>Sign up</Text>
-                            </Text>
-                        </TouchableOpacity>
+                        <AuthFooter
+                            text="Don't have an account?"
+                            linkText="Sign Up"
+                            onPress={() => router.push("/signup")}
+                        />
                     </KeyboardAvoidingView>
                 </TouchableWithoutFeedback>
             </SafeAreaView>
@@ -123,81 +96,3 @@ const login = () => {
 }
 
 export default login;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        padding: 24,
-    },
-
-    title: {
-        fontSize: 36,
-        fontWeight: "bold",
-        color: "#fff",
-        textAlign: "center",
-    },
-
-    subtitle: {
-        fontSize: 20,
-        color: "#f0f0f0",
-        textAlign: "center",
-        marginTop: 8,
-        marginBottom: 32,
-    },
-
-    inputWrapper: {
-        marginTop: 16,
-    },
-
-    input: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 12,
-        padding: 16,
-        marginTop: 16,
-        color: '#fff',
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.4)',
-    },
-
-    passwordContainer: {
-        position: 'relative',
-        justifyContent: 'center',
-    },
-
-    eyeIcon: {
-        position: 'absolute',
-        right: 16,
-        top: 28,
-    },
-
-    footer: {
-        marginTop: 32,
-        alignItems: 'center',
-    },
-
-    footerText: {
-        color: '#fff',
-        fontSize: 16,
-    },
-
-    signupText: {
-        color: '#00cfff',
-        fontWeight: 'bold',
-    },
-
-    loginBtn: {
-        backgroundColor: "#00cfff",
-        marginTop: 32,
-        padding: 16,
-        borderRadius: 12,
-        alignItems: "center",
-    },
-
-    loginText: {
-        color: "#0D1B2A",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-});

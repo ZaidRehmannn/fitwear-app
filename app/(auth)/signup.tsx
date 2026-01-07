@@ -1,6 +1,9 @@
+import AuthButton from '@/components/Auth/AuthButton';
+import AuthFields, { Field } from '@/components/Auth/AuthFields';
+import AuthFooter from '@/components/Auth/AuthFooter';
+import AuthHeader from '@/components/Auth/AuthHeader';
 import { signupUser } from '@/services/authService';
 import { showToast } from '@/utils/toast';
-import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -8,30 +11,30 @@ import {
     Keyboard,
     KeyboardAvoidingView, Platform,
     ScrollView,
-    StyleSheet, Text, TextInput, TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
+    TouchableWithoutFeedback
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-
 const signup = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
+
+    const signupFields: Field[] = [
+        { name: "name", placeholder: "Full Name", value: name, onChangeText: setName },
+        { name: "email", placeholder: "Email", value: email, onChangeText: setEmail },
+        { name: "password", placeholder: "Password", secure: true, value: password, onChangeText: setPassword },
+        { name: "confirmPassword", placeholder: "Confirm Password", secure: true, value: confirmPassword, onChangeText: setConfirmPassword },
+    ];
 
     const resetForm = () => {
         setName("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        setShowPassword(false);
-        setShowConfirmPassword(false);
     };
 
     const handleSignup = async () => {
@@ -79,88 +82,29 @@ const signup = () => {
                         style={{ flex: 1 }}
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
                     >
-                        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                            <Text style={styles.title}>FitWear</Text>
-                            <Text style={styles.subtitle}>Create your account</Text>
+                        <ScrollView
+                            contentContainerStyle={{ flex: 1, justifyContent: "center", padding: 24 }}
+                            keyboardShouldPersistTaps="handled"
+                        >
+                            {/* Header */}
+                            <AuthHeader title='FitWear' subtitle='Create your account' />
 
-                            <View style={styles.inputWrapper}>
-                                <TextInput
-                                    placeholder="Full Name"
-                                    placeholderTextColor="#ddd"
-                                    value={name}
-                                    onChangeText={setName}
-                                    style={styles.input}
-                                />
-                                <TextInput
-                                    placeholder="Email"
-                                    placeholderTextColor="#ddd"
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    style={styles.input}
-                                />
+                            {/* Input Fields */}
+                            <AuthFields fields={signupFields} />
 
-                                {/* Password */}
-                                <View style={styles.passwordContainer}>
-                                    <TextInput
-                                        placeholder="Password"
-                                        placeholderTextColor="#ddd"
-                                        value={password}
-                                        onChangeText={setPassword}
-                                        secureTextEntry={!showPassword}
-                                        style={[styles.input, { paddingRight: 50 }]}
-                                    />
-                                    <TouchableOpacity
-                                        style={styles.eyeIcon}
-                                        onPress={() => setShowPassword(!showPassword)}
-                                    >
-                                        <Ionicons
-                                            name={showPassword ? "eye" : "eye-off"}
-                                            size={24}
-                                            color="#fff"
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-
-                                {/* Confirm Password */}
-                                <View style={styles.passwordContainer}>
-                                    <TextInput
-                                        placeholder="Confirm Password"
-                                        placeholderTextColor="#ddd"
-                                        value={confirmPassword}
-                                        onChangeText={setConfirmPassword}
-                                        secureTextEntry={!showConfirmPassword}
-                                        style={[styles.input, { paddingRight: 50 }]}
-                                    />
-                                    <TouchableOpacity
-                                        style={styles.eyeIcon}
-                                        onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    >
-                                        <Ionicons
-                                            name={showConfirmPassword ? "eye" : "eye-off"}
-                                            size={24}
-                                            color="#fff"
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            {/* Signup Button */}
-                            <TouchableOpacity
-                                style={[styles.signupBtn, loading && { opacity: 0.7 }]}
+                            {/* Button */}
+                            <AuthButton
+                                title={loading ? "Signing up..." : "Sign Up"}
                                 onPress={handleSignup}
-                                disabled={loading}
-                            >
-                                <Text style={styles.signupTextBtn}>
-                                    {loading ? "Signing up..." : "Sign Up"}
-                                </Text>
-                            </TouchableOpacity>
+                                loading={loading}
+                            />
 
                             {/* Footer */}
-                            <TouchableOpacity style={styles.footer} onPress={() => router.push('/login')}>
-                                <Text style={styles.footerText}>
-                                    Already have an account? <Text style={styles.signupText}>Login</Text>
-                                </Text>
-                            </TouchableOpacity>
+                            <AuthFooter
+                                text="Already have an account?"
+                                linkText="Login"
+                                onPress={() => router.push("/login")}
+                            />
                         </ScrollView>
                     </KeyboardAvoidingView>
                 </TouchableWithoutFeedback>
@@ -170,70 +114,3 @@ const signup = () => {
 }
 
 export default signup;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 24,
-        justifyContent: "center",
-    },
-    title: {
-        fontSize: 36,
-        fontWeight: "bold",
-        color: "#fff",
-        textAlign: "center",
-    },
-    subtitle: {
-        fontSize: 20,
-        color: "#f0f0f0",
-        textAlign: "center",
-        marginTop: 8,
-        marginBottom: 32,
-    },
-    inputWrapper: {
-        marginTop: 16,
-    },
-    input: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 12,
-        padding: 16,
-        marginTop: 16,
-        color: '#fff',
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.4)',
-    },
-    passwordContainer: {
-        position: 'relative',
-        justifyContent: 'center',
-    },
-    eyeIcon: {
-        position: 'absolute',
-        right: 16,
-        top: 28,
-    },
-    signupBtn: {
-        backgroundColor: "#00cfff",
-        marginTop: 32,
-        padding: 16,
-        borderRadius: 12,
-        alignItems: "center",
-    },
-    signupTextBtn: {
-        color: "#0D1B2A",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    footer: {
-        marginTop: 32,
-        alignItems: 'center',
-    },
-    footerText: {
-        color: '#fff',
-        fontSize: 16,
-    },
-    signupText: {
-        color: '#00cfff',
-        fontWeight: 'bold',
-    }
-});
