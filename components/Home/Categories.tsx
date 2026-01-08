@@ -1,20 +1,19 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface CategoryProps {
-    categories?: string[]; // optional default categories
-    onPressCategory?: (category: string) => void; // callback when pressed
+    categories?: string[];
+    onPressCategory?: (category: string) => void;
 }
 
 const Categories: React.FC<CategoryProps> = ({
-    categories = ["Men", "Women", "Children"], // default categories
+    categories = ["Men", "Women", "Children"],
     onPressCategory,
 }) => {
     return (
         <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
+            contentContainerStyle={styles.container}
         >
             {categories.map((cat) => (
                 <TouchableOpacity
@@ -23,6 +22,7 @@ const Categories: React.FC<CategoryProps> = ({
                     onPress={() => onPressCategory && onPressCategory(cat)}
                 >
                     <Text style={styles.categoryText}>{cat}</Text>
+                    <Ionicons name="arrow-forward" size={20} color="#fff" />
                 </TouchableOpacity>
             ))}
         </ScrollView>
@@ -32,17 +32,22 @@ const Categories: React.FC<CategoryProps> = ({
 export default Categories;
 
 const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 18,
+        paddingVertical: 8
+    },
     categoryBtn: {
         backgroundColor: "#0D1B2A",
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderRadius: 20,
+        paddingVertical: 14,
         marginRight: 12,
+        marginBottom: 15,
         borderWidth: 1,
-        borderColor: "#00cfff",
+        borderBottomColor: "#fff",
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
     categoryText: {
-        color: "#00cfff",
+        color: "#fff",
         fontWeight: "bold",
     },
 });

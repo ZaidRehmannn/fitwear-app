@@ -16,9 +16,7 @@ const Header: React.FC<HeaderProps> = ({ openCategory, setopenCategory }) => {
                     <Ionicons name="search-outline" size={28} color="#fff" />
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => setopenCategory(!openCategory)}
-                >
+                <TouchableOpacity onPress={() => setopenCategory(!openCategory)}>
                     <Ionicons name="menu-outline" size={28} color="#fff" />
                 </TouchableOpacity>
             </View>

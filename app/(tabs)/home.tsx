@@ -1,55 +1,67 @@
-import Categories from '@/components/Home/Categories'
-import Header from '@/components/Home/Header'
-import React, { useState } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import CategoryDropdown from '@/components/Home/CategoryDropdown';
+import Header from '@/components/Home/Header';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const Home = () => {
+const home = () => {
     const [openCategory, setopenCategory] = useState(false);
+    const [headerHeight, setHeaderHeight] = useState(0);
 
-    const screenWidth = Dimensions.get('window').width;
+    const insets = useSafeAreaInsets();
+    const totalTopHeight = insets.top + headerHeight;
 
     return (
-        <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.container}>
             {/* Header */}
-            <Header openCategory={openCategory} setopenCategory={setopenCategory} />
+            <SafeAreaView
+                style={styles.headerContainer}
+                edges={['top']}
+                onLayout={(event) => {
+                    const { height } = event.nativeEvent.layout;
+                    setHeaderHeight(height - insets.top);
+                }}
+            >
+                <Header
+                    openCategory={openCategory}
+                    setopenCategory={setopenCategory}
+                />
+            </SafeAreaView>
 
-            {/* Dropdown below header */}
-            {openCategory && (
-                <View style={[styles.dropdown, { width: screenWidth }]}>
-                    <Categories onPressCategory={(cat) => {
-                        console.log("Selected:", cat);
-                        setopenCategory(false); // close dropdown on selection
-                    }} />
-                </View>
-            )}
+            {/* Category Dropdown with Overlay */}
+            <CategoryDropdown
+                isOpen={openCategory}
+                onClose={() => setopenCategory(false)}
+                topOffset={totalTopHeight}
+            />
 
             {/* Product Feed */}
             <View style={styles.content}>
                 <Text>Product feed coming here</Text>
             </View>
-        </SafeAreaView>
-    )
-}
+        </View>
+    );
+};
 
-export default Home
+export default home;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#1B3B5D",
     },
-    dropdown: {
+    headerContainer: {
         position: 'absolute',
-        top: 60, // adjust according to header height
+        top: 0,
         left: 0,
-        backgroundColor: '#0D1B2A',
-        zIndex: 10,
+        right: 0,
+        backgroundColor: "#1B3B5D",
+        zIndex: 1000,
     },
     content: {
         flex: 1,
         padding: 20,
         backgroundColor: "#fff",
-        marginTop: 60, // push content below header
+        paddingTop: 80,
     },
 });
