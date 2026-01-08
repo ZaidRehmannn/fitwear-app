@@ -1,20 +1,30 @@
-import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import Categories from '@/components/Home/Categories'
+import Header from '@/components/Home/Header'
+import React, { useState } from 'react'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const home = () => {
+const Home = () => {
+    const [openCategory, setopenCategory] = useState(false);
+
+    const screenWidth = Dimensions.get('window').width;
+
     return (
         <SafeAreaView style={styles.container} edges={['top']}>
-            <View style={styles.header}>
-                <Text style={styles.logo}>FitWear</Text>
+            {/* Header */}
+            <Header openCategory={openCategory} setopenCategory={setopenCategory} />
 
-                <View style={styles.headerActions}>
-                    <Ionicons name="search-outline" size={28} color="#fff" />
-                    <Ionicons name="menu-outline" size={28} color="#fff" />
+            {/* Dropdown below header */}
+            {openCategory && (
+                <View style={[styles.dropdown, { width: screenWidth }]}>
+                    <Categories onPressCategory={(cat) => {
+                        console.log("Selected:", cat);
+                        setopenCategory(false); // close dropdown on selection
+                    }} />
                 </View>
-            </View>
+            )}
 
+            {/* Product Feed */}
             <View style={styles.content}>
                 <Text>Product feed coming here</Text>
             </View>
@@ -22,32 +32,24 @@ const home = () => {
     )
 }
 
-export default home
+export default Home
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#1B3B5D"
+        backgroundColor: "#1B3B5D",
     },
-    header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 20,
-        paddingVertical: 12,
-    },
-    logo: {
-        fontSize: 30,
-        fontWeight: "bold",
-        color: "#fff",
-    },
-    headerActions: {
-        flexDirection: "row",
-        gap: 16,
+    dropdown: {
+        position: 'absolute',
+        top: 60, // adjust according to header height
+        left: 0,
+        backgroundColor: '#0D1B2A',
+        zIndex: 10,
     },
     content: {
         flex: 1,
         padding: 20,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        marginTop: 60, // push content below header
     },
 });
