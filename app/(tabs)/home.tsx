@@ -1,7 +1,8 @@
 import CategoryDropdown from '@/components/Home/CategoryDropdown';
 import Header from '@/components/Home/Header';
+import ProductFeed from '@/components/Home/ProductFeed';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const home = () => {
@@ -37,7 +38,7 @@ const home = () => {
 
             {/* Product Feed */}
             <View style={styles.content}>
-                <Text>Product feed coming here</Text>
+                <ProductFeed />
             </View>
         </View>
     );
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: "#fff",
-        paddingTop: 80,
+        paddingTop: 120,
+        color: "black"
     },
 });
