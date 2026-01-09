@@ -1,5 +1,5 @@
 import { db } from "@/config/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
 export interface Product {
     id: string;
@@ -29,4 +29,16 @@ export const getProductsByCategory = async (category: string): Promise<Product[]
         id: doc.id,
         ...(doc.data() as Omit<Product, "id">),
     }));
+};
+
+export const getProductById = async (id: string): Promise<Product | null> => {
+    const productRef = doc(db, "products", id);
+    const snapshot = await getDoc(productRef);
+
+    if (!snapshot.exists()) return null;
+
+    return {
+        id: snapshot.id,
+        ...(snapshot.data() as Omit<Product, "id">),
+    };
 };

@@ -1,3 +1,4 @@
+import { capitalize } from "@/utils/helpers";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
@@ -18,7 +19,7 @@ const Categories: React.FC<CategoryProps> = ({ categories, onPressCategory }) =>
                     style={styles.categoryBtn}
                     onPress={() => onPressCategory(cat)}
                 >
-                    <Text style={styles.categoryText}>{cat}</Text>
+                    <Text style={styles.categoryText}>{capitalize(cat)}</Text>
                     <Ionicons name="arrow-forward" size={20} color="#fff" />
                 </TouchableOpacity>
             ))}

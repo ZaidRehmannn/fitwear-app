@@ -18,7 +18,7 @@ export default function TabLayout() {
             }}
         >
             <Tabs.Screen
-                name="home"
+                name="home/index"
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Ionicons
@@ -31,7 +31,7 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="cart"
+                name="cart/index"
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Ionicons
@@ -44,7 +44,7 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="profile"
+                name="profile/index"
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Ionicons
@@ -53,6 +53,13 @@ export default function TabLayout() {
                             color={focused ? "#fff" : color}
                         />
                     ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="home/product/[id]"
+                options={{
+                    href: null,
                 }}
             />
         </Tabs>
