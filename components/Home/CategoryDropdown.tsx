@@ -1,3 +1,4 @@
+import { useCategories } from '@/hooks/useCategories';
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Categories from './Categories';
@@ -6,15 +7,19 @@ interface CategoryDropdownProps {
     isOpen: boolean;
     onClose: () => void;
     topOffset: number;
+    onSelectCategory: (category: string) => void;
 }
 
 const CategoryDropdown: React.FC<CategoryDropdownProps> = ({
     isOpen,
     onClose,
-    topOffset
+    topOffset,
+    onSelectCategory
 }) => {
     const screenWidth = Dimensions.get('window').width;
+    const { categories, loading } = useCategories();
 
+    if (loading) return null;
     if (!isOpen) return null;
 
     return (
@@ -35,8 +40,9 @@ const CategoryDropdown: React.FC<CategoryDropdownProps> = ({
                 }
             ]}>
                 <Categories
+                    categories={categories}
                     onPressCategory={(cat) => {
-                        console.log("Selected:", cat);
+                        onSelectCategory(cat)
                         onClose();
                     }}
                 />

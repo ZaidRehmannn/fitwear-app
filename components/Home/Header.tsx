@@ -3,20 +3,20 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface HeaderProps {
-    openCategory: boolean;
-    setopenCategory: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleCategory: () => void;
+    resetCategory: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ openCategory, setopenCategory }) => {
+const Header: React.FC<HeaderProps> = ({ toggleCategory, resetCategory }) => {
     return (
         <View style={styles.header}>
-            <Text style={styles.logo}>FitWear</Text>
+            <Text style={styles.logo} onPress={resetCategory}>FitWear</Text>
             <View style={styles.actions}>
                 <TouchableOpacity style={{ marginRight: 16 }}>
                     <Ionicons name="search-outline" size={28} color="#fff" />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => setopenCategory(!openCategory)}>
+                <TouchableOpacity onPress={() => toggleCategory()}>
                     <Ionicons name="menu-outline" size={28} color="#fff" />
                 </TouchableOpacity>
             </View>

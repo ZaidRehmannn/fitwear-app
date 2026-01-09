@@ -8,9 +8,14 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 const home = () => {
     const [openCategory, setopenCategory] = useState(false);
     const [headerHeight, setHeaderHeight] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
     const insets = useSafeAreaInsets();
     const totalTopHeight = insets.top + headerHeight;
+
+    const toggleCategoryDropdown = () => {
+        setopenCategory(!openCategory)
+    };
 
     return (
         <View style={styles.container}>
@@ -24,8 +29,8 @@ const home = () => {
                 }}
             >
                 <Header
-                    openCategory={openCategory}
-                    setopenCategory={setopenCategory}
+                    toggleCategory={toggleCategoryDropdown}
+                    resetCategory={() => setSelectedCategory(null)}
                 />
             </SafeAreaView>
 
@@ -34,11 +39,12 @@ const home = () => {
                 isOpen={openCategory}
                 onClose={() => setopenCategory(false)}
                 topOffset={totalTopHeight}
+                onSelectCategory={setSelectedCategory}
             />
 
             {/* Product Feed */}
             <View style={styles.content}>
-                <ProductFeed />
+                <ProductFeed category={selectedCategory} />
             </View>
         </View>
     );

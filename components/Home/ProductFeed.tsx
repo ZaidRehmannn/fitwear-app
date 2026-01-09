@@ -3,11 +3,11 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import ProductCard from "./ProductCard";
 
 interface ProductFeedProps {
-    category?: string;
+    category: string | null;
 }
 
 const ProductFeed: React.FC<ProductFeedProps> = ({ category }) => {
-    const { products, loading, error } = useProducts({ category });
+    const { products, loading, error } = useProducts(category);
 
     if (loading) return <Text>Loading...</Text>;
     if (error) return <Text>{error}</Text>;

@@ -1,5 +1,5 @@
 import { db } from "@/config/firebase";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export interface Product {
     id: string;
@@ -10,21 +10,23 @@ export interface Product {
     image: string;
 }
 
-export const getProducts = async (): Promise<Product[]> => {
-    try {
-        const productsRef = collection(db, "products");
-        const q = query(productsRef);
+export const getAllProducts = async (): Promise<Product[]> => {
+    const productsRef = collection(db, "products");
+    const snapshot = await getDocs(productsRef);
 
-        const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Product, "id">),
+    }));
+};
 
-        const products: Product[] = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...(doc.data() as Omit<Product, "id">),
-        }));
+export const getProductsByCategory = async (category: string): Promise<Product[]> => {
+    const productsRef = collection(db, "products");
+    const q = query(productsRef, where("category", "==", category));
+    const snapshot = await getDocs(q);
 
-        return products;
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        throw error;
-    }
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Product, "id">),
+    }));
 };

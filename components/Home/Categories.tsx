@@ -3,14 +3,11 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface CategoryProps {
-    categories?: string[];
-    onPressCategory?: (category: string) => void;
+    categories: string[];
+    onPressCategory: (category: string) => void;
 }
 
-const Categories: React.FC<CategoryProps> = ({
-    categories = ["Men", "Women", "Children"],
-    onPressCategory,
-}) => {
+const Categories: React.FC<CategoryProps> = ({ categories, onPressCategory }) => {
     return (
         <ScrollView
             contentContainerStyle={styles.container}
@@ -19,7 +16,7 @@ const Categories: React.FC<CategoryProps> = ({
                 <TouchableOpacity
                     key={cat}
                     style={styles.categoryBtn}
-                    onPress={() => onPressCategory && onPressCategory(cat)}
+                    onPress={() => onPressCategory(cat)}
                 >
                     <Text style={styles.categoryText}>{cat}</Text>
                     <Ionicons name="arrow-forward" size={20} color="#fff" />
