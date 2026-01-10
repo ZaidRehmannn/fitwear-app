@@ -1,51 +1,60 @@
-import { capitalize } from "@/utils/helpers";
+import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface CategoryProps {
-    categories: string[];
-    onPressCategory: (category: string) => void;
-}
+const categories = [
+    { id: 1, name: "Men", icon: "man-outline" },
+    { id: 2, name: "Women", icon: "woman-outline" },
+    { id: 3, name: "New", icon: "sparkles-outline" },
+    { id: 4, name: "Sale", icon: "pricetag-outline" },
+];
 
-const Categories: React.FC<CategoryProps> = ({ categories, onPressCategory }) => {
+const Categories = () => {
+    // const { categories, loading } = useCategories();
+
     return (
-        <ScrollView
-            contentContainerStyle={styles.container}
-        >
-            {categories.map((cat) => (
-                <TouchableOpacity
-                    key={cat}
-                    style={styles.categoryBtn}
-                    onPress={() => onPressCategory(cat)}
-                >
-                    <Text style={styles.categoryText}>{capitalize(cat)}</Text>
-                    <Ionicons name="arrow-forward" size={20} color="#fff" />
+        <View style={styles.categoriesContainer}>
+            {categories.map((category) => (
+                <TouchableOpacity key={category.id} style={styles.categoryItem}>
+                    <View style={styles.categoryIcon}>
+                        <Ionicons name={category.icon as any} size={22} color={colors.navy} />
+                    </View>
+                    <Text style={styles.categoryName}>{category.name}</Text>
                 </TouchableOpacity>
             ))}
-        </ScrollView>
+        </View>
     );
 };
 
 export default Categories;
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 18,
-        paddingVertical: 8
-    },
-    categoryBtn: {
-        backgroundColor: "#0D1B2A",
-        paddingVertical: 14,
-        marginRight: 12,
-        marginBottom: 15,
-        borderWidth: 1,
-        borderBottomColor: "#fff",
+    categoriesContainer: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        paddingHorizontal: 20,
+        marginBottom: 32,
     },
-    categoryText: {
-        color: "#fff",
-        fontWeight: "bold",
+    categoryItem: {
+        alignItems: "center",
+        gap: 8,
+    },
+    categoryIcon: {
+        width: 56,
+        height: 56,
+        borderRadius: 16,
+        backgroundColor: colors.white,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.navy,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+    },
+    categoryName: {
+        fontSize: 12,
+        fontWeight: "600",
+        color: colors.textPrimary,
     },
 });

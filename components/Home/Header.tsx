@@ -1,23 +1,23 @@
+import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface HeaderProps {
-    toggleCategory: () => void;
-    resetCategory: () => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ toggleCategory, resetCategory }) => {
+const Header = () => {
     return (
         <View style={styles.header}>
-            <Text style={styles.logo} onPress={resetCategory}>FitWear</Text>
-            <View style={styles.actions}>
-                <TouchableOpacity style={{ marginRight: 16 }}>
-                    <Ionicons name="search-outline" size={28} color="#fff" />
+            <View>
+                <Text style={styles.title}>FitWear</Text>
+                <Text style={styles.subtitle}>Style that speaks for you</Text>
+            </View>
+            <View style={styles.headerActions}>
+                <TouchableOpacity style={styles.iconButton}>
+                    <Ionicons name="search-outline" size={24} color={colors.navy} />
                 </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => toggleCategory()}>
-                    <Ionicons name="menu-outline" size={28} color="#fff" />
+                <TouchableOpacity style={styles.iconButton}>
+                    <Ionicons name="bag-outline" size={24} color={colors.navy} />
+                    <View style={styles.cartBadge}>
+                        <Text style={styles.cartBadgeText}>2</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
         </View>
@@ -32,15 +32,50 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 20,
-        paddingVertical: 12,
-        backgroundColor: "#1B3B5D",
+        paddingVertical: 16,
     },
-    logo: {
+    title: {
         fontSize: 28,
-        fontWeight: "bold",
-        color: "#fff",
+        fontWeight: "800",
+        color: colors.navy,
+        letterSpacing: -0.5,
     },
-    actions: {
+    subtitle: {
+        fontSize: 14,
+        color: colors.textSecondary,
+        marginTop: 2,
+    },
+    headerActions: {
         flexDirection: "row",
+        gap: 8,
+    },
+    iconButton: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: colors.white,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: colors.navy,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    cartBadge: {
+        position: "absolute",
+        top: -2,
+        right: -2,
+        width: 18,
+        height: 18,
+        borderRadius: 9,
+        backgroundColor: colors.cyan,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    cartBadgeText: {
+        fontSize: 10,
+        fontWeight: "700",
+        color: colors.navyDark,
     },
 });
