@@ -1,27 +1,37 @@
+import { useCategories } from "@/hooks/useCategories";
+import { capitalize } from "@/utils/helpers";
 import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import LoadingSpinner from "../shared/LoadingSpinner";
 
-const categories = [
-    { id: 1, name: "Men", icon: "man-outline" },
-    { id: 2, name: "Women", icon: "woman-outline" },
-    { id: 3, name: "New", icon: "sparkles-outline" },
-    { id: 4, name: "Sale", icon: "pricetag-outline" },
-];
+const categoryIcons: Record<string, string> = {
+    "men's clothing": "man-outline",
+    "women's clothing": "woman-outline",
+    "electronics": "phone-portrait",
+    "jewelery": "diamond-outline",
+};
 
 const Categories = () => {
-    // const { categories, loading } = useCategories();
+    const { categories, loading } = useCategories();
+
+    if (loading) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <View style={styles.categoriesContainer}>
-            {categories.map((category) => (
-                <TouchableOpacity key={category.id} style={styles.categoryItem}>
-                    <View style={styles.categoryIcon}>
-                        <Ionicons name={category.icon as any} size={22} color={colors.navy} />
-                    </View>
-                    <Text style={styles.categoryName}>{category.name}</Text>
-                </TouchableOpacity>
-            ))}
+            {categories.map((category) => {
+                const iconName = categoryIcons[category] || "grid-outline";
+                return (
+                    <TouchableOpacity key={category} style={styles.categoryItem}>
+                        <View style={styles.categoryIcon}>
+                            <Ionicons name={iconName as any} size={22} color={colors.navy} />
+                        </View>
+                        <Text style={styles.categoryName}>{capitalize(category)}</Text>
+                    </TouchableOpacity>
+                )
+            })}
         </View>
     );
 };
