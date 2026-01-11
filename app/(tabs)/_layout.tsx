@@ -1,9 +1,21 @@
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import { useAuth } from '@/context/AuthContext';
 import { tabColors } from '@/utils/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { Platform, StyleSheet, View } from 'react-native';
 
 export default function TabLayout() {
+    const { user, loading } = useAuth();
+
+    if (loading) {
+        return <LoadingSpinner />;
+    }
+
+    if (!user) {
+        return <Redirect href="/login" />;
+    }
+
     return (
         <Tabs
             screenOptions={{
