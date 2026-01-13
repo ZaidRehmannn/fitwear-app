@@ -13,7 +13,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
     const router = useRouter();
-// rendering
+
     return (
         <TouchableOpacity style={styles.productCard} onPress={() => router.push(`/shop/product/${product.id}`)}>
             <View style={styles.productImageContainer}>
