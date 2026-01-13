@@ -2,17 +2,14 @@ import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface HeaderProps {
+interface ShopHeaderProps {
     onCartPress: () => void;
 }
 
-const Header = ({ onCartPress }: HeaderProps) => {
+const ShopHeader = ({ onCartPress }: ShopHeaderProps) => {
     return (
         <View style={styles.header}>
-            <View>
-                <Text style={styles.title}>FitWear</Text>
-                <Text style={styles.subtitle}>Style that speaks for you</Text>
-            </View>
+            <Text style={styles.title}>Shop</Text>
             <TouchableOpacity style={styles.iconButton} onPress={onCartPress}>
                 <Ionicons name="bag-outline" size={24} color={colors.navy} />
                 <View style={styles.cartBadge}>
@@ -23,7 +20,7 @@ const Header = ({ onCartPress }: HeaderProps) => {
     );
 };
 
-export default Header;
+export default ShopHeader;
 
 const styles = StyleSheet.create({
     header: {
@@ -31,18 +28,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 20,
-        paddingVertical: 18,
+        paddingVertical: 16,
     },
     title: {
         fontSize: 28,
-        fontWeight: "800",
-        color: colors.navy,
-        letterSpacing: -0.5,
-    },
-    subtitle: {
-        fontSize: 14,
-        color: colors.textSecondary,
-        marginTop: 2,
+        fontWeight: "bold",
+        color: "#1B3B5D",
     },
     iconButton: {
         width: 44,

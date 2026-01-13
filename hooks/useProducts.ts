@@ -1,7 +1,7 @@
 import { getAllProducts, getProductsByCategory, Product } from "@/services/productService";
 import { useEffect, useState } from "react";
 
-export const useProducts = (category: string | null) => {
+export const useProducts = (category: string) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -12,9 +12,9 @@ export const useProducts = (category: string | null) => {
 
         const fetchProducts = async () => {
             try {
-                const data = category
-                    ? await getProductsByCategory(category)
-                    : await getAllProducts();
+                const data = category === "All"
+                    ? await getAllProducts()
+                    : await getProductsByCategory(category);
 
                 setProducts(data);
             } catch {

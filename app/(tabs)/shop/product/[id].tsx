@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -65,7 +65,7 @@ const ProductDetail = () => {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
-                    <Feather name="arrow-left" size={24} color="#1B3B5D" />
+                    <Ionicons name="arrow-back" size={24} color="#1B3B5D" />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => setIsWishlisted(!isWishlisted)}

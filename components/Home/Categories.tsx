@@ -1,9 +1,7 @@
-import { useCategories } from "@/hooks/useCategories";
 import { capitalize } from "@/utils/helpers";
 import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import LoadingSpinner from "../shared/LoadingSpinner";
 
 const categoryIcons: Record<string, string> = {
     "men's clothing": "man-outline",
@@ -12,13 +10,11 @@ const categoryIcons: Record<string, string> = {
     "jewelery": "diamond-outline",
 };
 
-const Categories = () => {
-    const { categories, loading } = useCategories();
+interface CategoriesProps {
+    categories: string[];
+}
 
-    if (loading) {
-        return <LoadingSpinner />;
-    }
-
+const Categories = ({ categories }: CategoriesProps) => {
     return (
         <View style={styles.categoriesContainer}>
             {categories.map((category) => {

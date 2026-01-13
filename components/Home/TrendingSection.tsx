@@ -1,18 +1,15 @@
-import { useProducts } from "@/hooks/useProducts";
 import { colors } from "@/utils/theme";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native/";
-import LoadingSpinner from "../shared/LoadingSpinner";
 import ProductCard from "../shared/ProductCard";
+import { Product } from "@/services/productService";
 
-const TrendingSection = () => {
+interface TrendingSectionProps {
+    products: Product[];
+}
+
+const TrendingSection = ({ products }: TrendingSectionProps) => {
     const router = useRouter();
-    const { products, loading } = useProducts(null);
-
-    if (loading) {
-        return <LoadingSpinner />;
-    }
-
     const trendingProducts = products.slice(0, 3);
 
     return (

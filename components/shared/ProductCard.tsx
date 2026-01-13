@@ -41,7 +41,7 @@ export default ProductCard;
 const styles = StyleSheet.create({
     productCard: {
         width: CARD_WIDTH,
-        marginRight: 16,
+        paddingBottom: 24,
     },
     productImageContainer: {
         position: "relative",
