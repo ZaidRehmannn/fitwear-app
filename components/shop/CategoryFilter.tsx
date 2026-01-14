@@ -1,3 +1,4 @@
+import { useCategory } from "@/context/CategoryContext";
 import { useCategories } from "@/hooks/useCategories";
 import { capitalize } from "@/utils/helpers";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,22 +7,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CategoryDropdown from "./CategoryDropdown";
 
 interface CategoryFilterProps {
-    selectedCategory: string;
-    onSelectCategory: (category: string) => void;
     productCount: number;
 }
 
-const CategoryFilter = ({
-    selectedCategory,
-    onSelectCategory,
-    productCount,
-}: CategoryFilterProps) => {
+const CategoryFilter = ({ productCount }: CategoryFilterProps) => {
     const { categories } = useCategories();
+    const { selectedCategory, setSelectedCategory } = useCategory();
     const [showDropdown, setShowDropdown] = useState(false);
     const finalCategories = ["All", ...categories];
 
     const handleSelectCategory = (category: string) => {
-        onSelectCategory(category);
+        setSelectedCategory(category);
         setShowDropdown(false);
     };
 
@@ -45,7 +41,6 @@ const CategoryFilter = ({
             {showDropdown && (
                 <CategoryDropdown
                     categories={finalCategories}
-                    selectedCategory={selectedCategory}
                     onSelectCategory={handleSelectCategory}
                 />
             )}

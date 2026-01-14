@@ -3,6 +3,7 @@ import CategoryFilter from "@/components/shop/CategoryFilter";
 import ProductGrid from "@/components/shop/ProductGrid";
 import SearchBar from "@/components/shop/SearchBar";
 import ShopHeader from "@/components/shop/ShopHeader";
+import { useCategory } from "@/context/CategoryContext";
 import { useProducts } from "@/hooks/useProducts";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -12,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Shop = () => {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("All");
+    const { selectedCategory } = useCategory();
     const { products, loading } = useProducts(selectedCategory);
 
     const filteredProducts = products.filter((product) =>
@@ -31,8 +32,6 @@ const Shop = () => {
                 />
 
                 <CategoryFilter
-                    selectedCategory={selectedCategory}
-                    onSelectCategory={setSelectedCategory}
                     productCount={products.length}
                 />
 

@@ -1,6 +1,8 @@
+import { useCategory } from "@/context/CategoryContext";
 import { capitalize } from "@/utils/helpers";
 import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const categoryIcons: Record<string, string> = {
@@ -15,12 +17,24 @@ interface CategoriesProps {
 }
 
 const Categories = ({ categories }: CategoriesProps) => {
+    const router = useRouter();
+    const { setSelectedCategory } = useCategory();
+
+    const onCategoryPress = (category: string) => {
+        setSelectedCategory(category);
+        router.push("/(tabs)/shop");
+    };
+
     return (
         <View style={styles.categoriesContainer}>
             {categories.map((category) => {
                 const iconName = categoryIcons[category] || "grid-outline";
                 return (
-                    <TouchableOpacity key={category} style={styles.categoryItem}>
+                    <TouchableOpacity
+                        key={category}
+                        style={styles.categoryItem}
+                        onPress={() => onCategoryPress(category)}
+                    >
                         <View style={styles.categoryIcon}>
                             <Ionicons name={iconName as any} size={22} color={colors.navy} />
                         </View>

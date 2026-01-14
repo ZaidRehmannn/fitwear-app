@@ -1,18 +1,16 @@
+import { useCategory } from "@/context/CategoryContext";
 import { capitalize } from "@/utils/helpers";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface CategoryDropdownProps {
     categories: string[];
-    selectedCategory: string;
     onSelectCategory: (category: string) => void;
 }
 
-const CategoryDropdown = ({
-    categories,
-    selectedCategory,
-    onSelectCategory,
-}: CategoryDropdownProps) => {
+const CategoryDropdown = ({ categories, onSelectCategory }: CategoryDropdownProps) => {
+    const { selectedCategory } = useCategory();
+
     return (
         <View style={styles.dropdownMenu}>
             {categories.map((category) => (
