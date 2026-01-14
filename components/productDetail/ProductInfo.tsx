@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
         color: "#888",
         textTransform: "uppercase",
         letterSpacing: 1.5,
+        paddingBottom: 4,
     },
     name: {
         fontSize: 26,
         fontWeight: "bold",
         color: "#1B3B5D",
-        marginTop: 4,
+        marginVertical: 4,
     },
     price: {
         fontSize: 24,

@@ -28,7 +28,6 @@ export default QuantitySelector;
 
 const styles = StyleSheet.create({
     optionSection: {
-        marginTop: 24,
         paddingHorizontal: 24,
     },
     optionTitle: {

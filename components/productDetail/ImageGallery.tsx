@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     mainImage: {
         width: width,
         height: width,
+        padding: 16,
     },
     thumbnailsContainer: {
         flexDirection: "row",
@@ -65,7 +66,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         overflow: "hidden",
         borderWidth: 2,
-        borderColor: "transparent",
+        borderColor: "black",
+        padding: 2,
     },
     thumbnailImage: {
         width: "100%",

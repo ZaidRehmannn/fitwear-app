@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: "#eee",
         gap: 20,
+        marginTop: 25,
     },
     totalSection: {
         flex: 1,

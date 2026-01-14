@@ -8,7 +8,7 @@ import { useProduct } from "@/hooks/useProduct";
 import { showToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProductDetail = () => {
@@ -35,7 +35,6 @@ const ProductDetail = () => {
 
     const handleAddToCart = () => {
         showToast('success', `Added ${quantity}x ${product.title} to cart!`);
-        router.push("/cart");
     };
 
     return (
@@ -69,6 +68,8 @@ const ProductDetail = () => {
                     totalPrice={product.price * quantity}
                     onAddToCart={handleAddToCart}
                 />
+
+                <View style={styles.bottomSpacer} />
             </ScrollView>
         </SafeAreaView>
     );
@@ -80,6 +81,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
+    },
+    bottomSpacer: {
+        height: 70,
     },
     center: {
         flex: 1,
