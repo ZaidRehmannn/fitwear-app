@@ -4,6 +4,7 @@ import ProductHeader from "@/components/productDetail/ProductHeader";
 import ProductInfo from "@/components/productDetail/ProductInfo";
 import QuantitySelector from "@/components/productDetail/QuantitySelector";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { useCart } from "@/context/CartContext";
 import { useProduct } from "@/hooks/useProduct";
 import { showToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -18,6 +19,7 @@ const ProductDetail = () => {
     const [isWishlisted, setIsWishlisted] = useState(false);
 
     const { product, loading, error } = useProduct(id);
+    const { addToCart } = useCart();
 
     if (loading) {
         return <LoadingSpinner />;
@@ -35,6 +37,7 @@ const ProductDetail = () => {
 
     const handleAddToCart = () => {
         showToast('success', `Added ${quantity}x ${product.title} to cart!`);
+        addToCart(product, quantity);
     };
 
     return (

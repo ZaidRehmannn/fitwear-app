@@ -7,7 +7,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 export default function TabLayout() {
     const { user, loading } = useAuth();
-
+    
     if (loading) {
         return <LoadingSpinner />;
     }
