@@ -1,5 +1,6 @@
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { tabColors } from '@/utils/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Redirect, Tabs } from 'expo-router';
@@ -7,7 +8,8 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 export default function TabLayout() {
     const { user, loading } = useAuth();
-    
+    const { cartQuantity } = useCart();
+
     if (loading) {
         return <LoadingSpinner />;
     }
@@ -79,7 +81,7 @@ export default function TabLayout() {
                             />
                         </View>
                     ),
-                    tabBarBadge: 3, // Dynamic cart count
+                    tabBarBadge: cartQuantity() > 0 ? cartQuantity() : undefined,
                     tabBarBadgeStyle: styles.badge,
                 }}
             />

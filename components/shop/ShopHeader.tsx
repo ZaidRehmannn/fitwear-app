@@ -1,3 +1,4 @@
+import { useCart } from "@/context/CartContext";
 import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -7,14 +8,18 @@ interface ShopHeaderProps {
 }
 
 const ShopHeader = ({ onCartPress }: ShopHeaderProps) => {
+    const { cartQuantity } = useCart();
+
     return (
         <View style={styles.header}>
             <Text style={styles.title}>Shop</Text>
             <TouchableOpacity style={styles.iconButton} onPress={onCartPress}>
                 <Ionicons name="bag-outline" size={24} color={colors.navy} />
-                <View style={styles.cartBadge}>
-                    <Text style={styles.cartBadgeText}>2</Text>
-                </View>
+                {cartQuantity() > 0 && (
+                    <View style={styles.cartBadge}>
+                        <Text style={styles.cartBadgeText}>{cartQuantity()}</Text>
+                    </View>
+                )}
             </TouchableOpacity>
         </View>
     );

@@ -8,7 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useProduct } from "@/hooks/useProduct";
 import { showToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -17,9 +17,15 @@ const ProductDetail = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const [quantity, setQuantity] = useState(1);
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const [added, setAdded] = useState(false);
 
     const { product, loading, error } = useProduct(id);
     const { addToCart } = useCart();
+
+    useEffect(() => {
+        setQuantity(1);
+        setAdded(false);
+    }, [id]);
 
     if (loading) {
         return <LoadingSpinner />;
@@ -38,6 +44,7 @@ const ProductDetail = () => {
     const handleAddToCart = () => {
         showToast('success', `Added ${quantity}x ${product.title} to cart!`);
         addToCart(product, quantity);
+        setAdded(true);
     };
 
     return (
@@ -70,6 +77,7 @@ const ProductDetail = () => {
                 <BottomBar
                     totalPrice={product.price * quantity}
                     onAddToCart={handleAddToCart}
+                    disabled={added}
                 />
 
                 <View style={styles.bottomSpacer} />

@@ -17,6 +17,7 @@ interface CartContextType {
     addToCart: (product: Product, quantity?: number) => void;
     updateQuantity: (productId: string, delta: number) => void;
     removeFromCart: (productId: string) => void;
+    cartQuantity: () => number;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -68,6 +69,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         setCartItems(prev => prev.filter(item => item.id !== productId));
     };
 
+    const cartQuantity = (): number => {
+        return cartItems.length;
+    };
+
     const totals = useMemo<CartTotals>(() => {
         const subtotal = cartItems.reduce(
             (sum, item) => sum + item.price * item.quantity,
@@ -88,6 +93,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 addToCart,
                 updateQuantity,
                 removeFromCart,
+                cartQuantity
             }}
         >
             {children}
