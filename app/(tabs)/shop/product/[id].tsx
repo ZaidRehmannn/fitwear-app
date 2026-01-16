@@ -11,7 +11,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+//testing
 const ProductDetail = () => {
     const router = useRouter();
     const { id } = useLocalSearchParams<{ id: string }>();
