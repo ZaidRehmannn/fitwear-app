@@ -1,10 +1,10 @@
 import { colors } from "@/utils/theme";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 const PromoBanner = () => {
     return (
-        <TouchableOpacity style={styles.promoBanner}>
+        <View style={styles.promoBanner}>
             <LinearGradient
                 colors={[colors.navyDark, colors.navy]}
                 start={{ x: 0, y: 0 }}
@@ -20,7 +20,7 @@ const PromoBanner = () => {
                     <Text style={styles.promoCodeText}>FIRST20</Text>
                 </View>
             </LinearGradient>
-        </TouchableOpacity>
+        </View>
     );
 };
 
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         borderRadius: 20,
         overflow: "hidden",
-        marginBottom: 24,
+        marginBottom: 28,
     },
     promoGradient: {
         flexDirection: "row",

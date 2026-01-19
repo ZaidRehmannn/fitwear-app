@@ -1,19 +1,69 @@
+import { showToast } from "@/utils/toast";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+    Alert,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 
 interface PromoCodeSectionProps {
     onApply: (code: string) => void;
+    loading: boolean;
+    error: string | null;
+    success: boolean;
 }
 
-const PromoCodeSection = ({ onApply }: PromoCodeSectionProps) => {
+const PromoCodeSection = ({ onApply, loading, error, success }: PromoCodeSectionProps) => {
+    const [code, setCode] = useState("");
+
+    const handleApply = () => {
+        if (!code.trim() || loading) return;
+        onApply(code.trim());
+    };
+
+    useEffect(() => {
+        if (success) {
+            showToast("success", "Promo code applied successfully");
+            setCode("");
+        }
+    }, [success]);
+
+    useEffect(() => {
+        if (error) {
+            Alert.alert("Promo Code Error", error);
+        }
+    }, [error]);
+
     return (
         <View style={styles.promoSection}>
             <View style={styles.promoInputWrapper}>
                 <Ionicons name="pricetag" size={20} color="#888" />
-                <Text style={styles.promoPlaceholder}>Enter promo code</Text>
+                <TextInput
+                    value={code}
+                    onChangeText={setCode}
+                    placeholder="Enter promo code"
+                    placeholderTextColor="#888"
+                    style={styles.promoInput}
+                    autoCapitalize="characters"
+                    editable={!loading}
+                />
             </View>
-            <TouchableOpacity style={styles.applyBtn} onPress={() => onApply("")}>
-                <Text style={styles.applyBtnText}>Apply</Text>
+
+            <TouchableOpacity
+                style={[
+                    styles.applyBtn,
+                    (loading || !code.trim()) && styles.disabledBtn,
+                ]}
+                onPress={handleApply}
+                disabled={loading || !code.trim()}
+            >
+                <Text style={styles.applyBtnText}>
+                    {loading ? "Applying..." : "Apply"}
+                </Text>
             </TouchableOpacity>
         </View>
     );
@@ -54,5 +104,13 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "600",
         fontSize: 14,
+    },
+    promoInput: {
+        flex: 1,
+        fontSize: 14,
+        color: "#1B3B5D",
+    },
+    disabledBtn: {
+        opacity: 0.5,
     },
 });

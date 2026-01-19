@@ -1,4 +1,5 @@
 import { Product } from "@/services/productService";
+import { getPromoCode, PromoCode } from "@/services/promoService";
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
 export interface CartItem extends Product {
@@ -9,6 +10,7 @@ interface CartTotals {
     subtotal: number;
     shipping: number;
     total: number;
+    discount: number;
 }
 
 interface CartContextType {
@@ -18,12 +20,14 @@ interface CartContextType {
     updateQuantity: (productId: string, delta: number) => void;
     removeFromCart: (productId: string) => void;
     cartQuantity: () => number;
+    applyPromoCode: (code: string) => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [promo, setPromo] = useState<PromoCode | null>(null);
 
     const modifyItemQuantity = (product: Product, delta: number) => {
         setCartItems(prev => {
@@ -73,6 +77,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return cartItems.length;
     };
 
+    const applyPromoCode = async (code: string) => {
+        const promoData = await getPromoCode(code);
+
+        if (!promoData) {
+            throw new Error("Invalid Promo Code!");
+        }
+
+        setPromo(promoData);
+    };
+
     const totals = useMemo<CartTotals>(() => {
         const subtotal = cartItems.reduce(
             (sum, item) => sum + item.price * item.quantity,
@@ -80,10 +94,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         );
 
         const shipping = subtotal > 100 || subtotal === 0 ? 0 : 9.99;
-        const total = subtotal + shipping;
 
-        return { subtotal, shipping, total };
-    }, [cartItems]);
+        let discount = 0;
+        if (promo) {
+            discount =
+                promo.type === "percentage"
+                    ? (subtotal * promo.value) / 100
+                    : promo.value;
+        }
+
+        const total = Math.max(0, subtotal + shipping - discount);
+
+        return { subtotal, shipping, total, discount };
+    }, [cartItems, promo]);
 
     return (
         <CartContext.Provider
@@ -93,7 +116,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 addToCart,
                 updateQuantity,
                 removeFromCart,
-                cartQuantity
+                cartQuantity,
+                applyPromoCode,
             }}
         >
             {children}

@@ -1,9 +1,16 @@
-import { useCart } from "@/context/CartContext";
 import { StyleSheet, Text, View } from "react-native";
 
-const OrderSummary = () => {
-    const { totals } = useCart();
-    const { subtotal, shipping, total } = totals;
+interface OrderSummaryProps {
+    totals: {
+        subtotal: number;
+        shipping: number;
+        discount: number;
+        total: number;
+    };
+}
+
+const OrderSummary = ({ totals }: OrderSummaryProps) => {
+    const { subtotal, shipping, total, discount } = totals;
 
     return (
         <View style={styles.summarySection}>
@@ -25,6 +32,15 @@ const OrderSummary = () => {
                 <Text style={styles.freeShippingHint}>
                     Add ${(100 - subtotal).toFixed(2)} more for free shipping
                 </Text>
+            )}
+
+            {discount > 0 && (
+                <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>Discount</Text>
+                    <Text style={[styles.summaryValue, { color: "#00cfff" }]}>
+                        -${discount.toFixed(2)}
+                    </Text>
+                </View>
             )}
 
             <View style={[styles.summaryRow, styles.totalRow]}>

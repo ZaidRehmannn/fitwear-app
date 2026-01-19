@@ -5,13 +5,15 @@ import EmptyCart from "@/components/cart/EmptyCart";
 import OrderSummary from "@/components/cart/OrderSummary";
 import PromoCodeSection from "@/components/cart/PromoCodeSection";
 import { useCart } from "@/context/CartContext";
+import { usePromoCode } from "@/hooks/usePromoCode";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Cart = () => {
     const router = useRouter();
-    const { cartItems } = useCart();
+    const { cartItems, totals } = useCart();
+    const { applyCode, loading, error, success } = usePromoCode();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -28,9 +30,14 @@ const Cart = () => {
                             items={cartItems}
                         />
 
-                        <PromoCodeSection onApply={(code) => console.log("Apply:", code)} />
+                        <PromoCodeSection
+                            onApply={applyCode}
+                            loading={loading}
+                            error={error}
+                            success={success}
+                        />
 
-                        <OrderSummary />
+                        <OrderSummary totals={totals} />
                     </ScrollView>
 
                     <CheckoutBar onCheckout={() => console.log("Checkout")} />
