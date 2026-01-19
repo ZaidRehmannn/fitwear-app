@@ -5,18 +5,27 @@ interface QuantitySelectorProps {
     quantity: number;
     onIncrement: () => void;
     onDecrement: () => void;
+    disabled: boolean;
 }
 
-const QuantitySelector = ({ quantity, onIncrement, onDecrement }: QuantitySelectorProps) => {
+const QuantitySelector = ({ quantity, onIncrement, onDecrement, disabled }: QuantitySelectorProps) => {
     return (
         <View style={styles.optionSection}>
             <Text style={styles.optionTitle}>Quantity</Text>
             <View style={styles.quantityRow}>
-                <TouchableOpacity style={styles.quantityBtn} onPress={onDecrement}>
+                <TouchableOpacity
+                    style={[styles.quantityBtn, disabled && styles.disabledBtn]}
+                    onPress={onDecrement}
+                    disabled={disabled}
+                >
                     <Ionicons name="remove" size={20} color="#1B3B5D" />
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>{quantity}</Text>
-                <TouchableOpacity style={styles.quantityBtn} onPress={onIncrement}>
+                <TouchableOpacity
+                    style={[styles.quantityBtn, disabled && styles.disabledBtn]}
+                    onPress={onIncrement}
+                    disabled={disabled}
+                >
                     <Ionicons name="add" size={20} color="#1B3B5D" />
                 </TouchableOpacity>
             </View>
@@ -55,5 +64,8 @@ const styles = StyleSheet.create({
         color: "#1B3B5D",
         minWidth: 30,
         textAlign: "center",
+    },
+    disabledBtn: {
+        opacity: 0.4,
     },
 });

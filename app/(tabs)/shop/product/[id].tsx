@@ -72,6 +72,7 @@ const ProductDetail = () => {
                     quantity={quantity}
                     onIncrement={() => setQuantity(quantity + 1)}
                     onDecrement={() => setQuantity(Math.max(1, quantity - 1))}
+                    disabled={added}
                 />
 
                 <BottomBar
