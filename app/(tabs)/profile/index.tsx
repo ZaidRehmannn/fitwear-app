@@ -12,7 +12,7 @@ const MENU_ITEMS = [
     { icon: "settings", label: "Settings", route: "/settings" },
     { icon: "help-circle", label: "Help & Support", route: "/help" },
 ];
-
+// test
 const Profile = () => {
     const router = useRouter();
 
