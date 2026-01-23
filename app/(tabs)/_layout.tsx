@@ -34,7 +34,7 @@ export default function TabLayout() {
                 options={{
                     title: 'Home',
                     tabBarIcon: ({ color, focused }) => (
-                        <View style={focused ? styles.activeIconContainer : undefined}>
+                        <View>
                             <Ionicons
                                 name={focused ? 'home' : 'home-outline'}
                                 size={24}
@@ -50,7 +50,7 @@ export default function TabLayout() {
                 options={{
                     title: 'Shop',
                     tabBarIcon: ({ color, focused }) => (
-                        <View style={focused ? styles.activeIconContainer : undefined}>
+                        <View>
                             <Ionicons
                                 name={focused ? 'grid' : 'grid-outline'}
                                 size={24}
@@ -73,7 +73,7 @@ export default function TabLayout() {
                 options={{
                     title: 'Cart',
                     tabBarIcon: ({ color, focused }) => (
-                        <View style={focused ? styles.activeIconContainer : undefined}>
+                        <View>
                             <Ionicons
                                 name={focused ? 'cart' : 'cart-outline'}
                                 size={24}
@@ -91,7 +91,7 @@ export default function TabLayout() {
                 options={{
                     title: 'Profile',
                     tabBarIcon: ({ color, focused }) => (
-                        <View style={focused ? styles.activeIconContainer : undefined}>
+                        <View>
                             <Ionicons
                                 name={focused ? 'person' : 'person-outline'}
                                 size={24}
@@ -131,12 +131,6 @@ const styles = StyleSheet.create({
     },
     tabBarItem: {
         paddingTop: 4,
-    },
-    activeIconContainer: {
-        backgroundColor: 'rgba(0, 207, 255, 0.12)',
-        borderRadius: 12,
-        padding: 8,
-        marginBottom: -4,
     },
     badge: {
         backgroundColor: tabColors.cyan,

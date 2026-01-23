@@ -1,21 +1,47 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ProfileCardProps {
     name: string;
     email: string;
+    joinedDate: string;
+    profilePic?: string;
+    onImagePress: () => void;
+    isUploading: boolean;
 }
 
-const ProfileCard = ({ name, email }: ProfileCardProps) => {
+const ProfileCard = ({ name, email, joinedDate, profilePic, onImagePress, isUploading }: ProfileCardProps) => {
     return (
         <View style={styles.profileCard}>
-            <View style={styles.avatarContainer}>
-                <Ionicons name="person" size={42} color="#00cfff" />
-            </View>
+            <TouchableOpacity
+                onPress={onImagePress}
+                disabled={isUploading}
+                activeOpacity={0.7}
+                style={styles.avatarContainer}
+            >
+                {isUploading ? (
+                    <ActivityIndicator size="small" color="#00cfff" />
+                ) : profilePic ? (
+                    <Image source={{ uri: profilePic }} style={styles.avatarImage} />
+                ) : (
+                    <Ionicons name="person" size={42} color="#00cfff" />
+                )}
+
+                {!isUploading && (
+                    <View style={styles.cameraBadge}>
+                        <Ionicons name="camera" size={12} color="#fff" />
+                    </View>
+                )}
+            </TouchableOpacity>
 
             <View style={styles.profileInfo}>
                 <Text style={styles.userName}>{name}</Text>
                 <Text style={styles.userEmail}>{email}</Text>
+
+                <View style={styles.joinedContainer}>
+                    <Ionicons name="calendar-outline" size={12} color="#888" />
+                    <Text style={styles.joinedText}>Joined {joinedDate}</Text>
+                </View>
             </View>
         </View>
     );
@@ -41,6 +67,22 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#fff",
+        position: 'relative',
+        overflow: 'hidden',
+    },
+    avatarImage: {
+        width: '100%',
+        height: '100%',
+    },
+    cameraBadge: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: '#1B3B5D',
+        padding: 4,
+        borderRadius: 10,
+        borderWidth: 1.5,
+        borderColor: '#fff',
     },
     profileInfo: {
         marginLeft: 16,
@@ -55,5 +97,15 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#888",
         marginTop: 2,
+    },
+    joinedContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 8,
+        gap: 4,
+    },
+    joinedText: {
+        fontSize: 12,
+        color: "#888",
     },
 });
