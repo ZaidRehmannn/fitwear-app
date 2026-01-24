@@ -13,26 +13,32 @@ interface ProfileCardProps {
 const ProfileCard = ({ name, email, joinedDate, profilePic, onImagePress, isUploading }: ProfileCardProps) => {
     return (
         <View style={styles.profileCard}>
-            <TouchableOpacity
-                onPress={onImagePress}
-                disabled={isUploading}
-                activeOpacity={0.7}
-                style={styles.avatarContainer}
-            >
-                {isUploading ? (
-                    <ActivityIndicator size="small" color="#00cfff" />
-                ) : profilePic ? (
-                    <Image source={{ uri: profilePic }} style={styles.avatarImage} />
-                ) : (
-                    <Ionicons name="person" size={42} color="#00cfff" />
-                )}
+            <View style={styles.avatarWrapper}>
+                <TouchableOpacity
+                    onPress={onImagePress}
+                    disabled={isUploading}
+                    activeOpacity={0.7}
+                    style={styles.avatarContainer}
+                >
+                    {isUploading ? (
+                        <ActivityIndicator size="small" color="#00cfff" />
+                    ) : profilePic ? (
+                        <Image source={{ uri: profilePic }} style={styles.avatarImage} />
+                    ) : (
+                        <Ionicons name="person" size={42} color="#00cfff" />
+                    )}
+                </TouchableOpacity>
 
                 {!isUploading && (
-                    <View style={styles.cameraBadge}>
-                        <Ionicons name="camera" size={12} color="#fff" />
-                    </View>
+                    <TouchableOpacity
+                        onPress={onImagePress}
+                        style={styles.cameraBadge}
+                        activeOpacity={0.9}
+                    >
+                        <Ionicons name="camera" size={14} color="#fff" />
+                    </TouchableOpacity>
                 )}
-            </TouchableOpacity>
+            </View>
 
             <View style={styles.profileInfo}>
                 <Text style={styles.userName}>{name}</Text>
@@ -58,16 +64,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#f8fafc",
         borderRadius: 20,
     },
-    avatarContainer: {
+    avatarWrapper: {
+        position: 'relative',
         width: 80,
         height: 80,
+    },
+    avatarContainer: {
+        width: '100%',
+        height: '100%',
         borderRadius: 40,
         borderWidth: 3,
         borderColor: "#00cfff",
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#fff",
-        position: 'relative',
         overflow: 'hidden',
     },
     avatarImage: {
@@ -76,13 +86,18 @@ const styles = StyleSheet.create({
     },
     cameraBadge: {
         position: 'absolute',
-        bottom: 0,
-        right: 0,
+        bottom: -2,
+        right: -2,
         backgroundColor: '#1B3B5D',
-        padding: 4,
-        borderRadius: 10,
-        borderWidth: 1.5,
+        padding: 6,
+        borderRadius: 15,
+        borderWidth: 2,
         borderColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 4,
     },
     profileInfo: {
         marginLeft: 16,
