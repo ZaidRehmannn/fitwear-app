@@ -5,6 +5,7 @@ import ProductInfo from "@/components/productDetail/ProductInfo";
 import QuantitySelector from "@/components/productDetail/QuantitySelector";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { useProduct } from "@/hooks/useProduct";
 import { showToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -16,11 +17,13 @@ const ProductDetail = () => {
     const router = useRouter();
     const { id } = useLocalSearchParams<{ id: string }>();
     const [quantity, setQuantity] = useState(1);
-    const [isWishlisted, setIsWishlisted] = useState(false);
     const [added, setAdded] = useState(false);
 
     const { product, loading, error } = useProduct(id);
     const { addToCart } = useCart();
+
+    const { toggleWishlist, isInWishlist } = useWishlist();
+    const isWishlisted = isInWishlist(id as string);
 
     useEffect(() => {
         setQuantity(1);
@@ -47,12 +50,22 @@ const ProductDetail = () => {
         setAdded(true);
     };
 
+    const handleToggleWishlist = async () => {
+        try {
+            await toggleWishlist(product.id);
+            const status = !isWishlisted ? "added to" : "removed from";
+            showToast('success', `${product.title} ${status} wishlist`);
+        } catch (err) {
+            showToast('error', "Could not update wishlist");
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ProductHeader
                 onBack={() => router.back()}
                 isWishlisted={isWishlisted}
-                onToggleWishlist={() => setIsWishlisted(!isWishlisted)}
+                onToggleWishlist={handleToggleWishlist}
             />
 
             <ScrollView showsVerticalScrollIndicator={false}>

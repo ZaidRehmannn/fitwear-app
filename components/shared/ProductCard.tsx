@@ -1,3 +1,4 @@
+import { useWishlist } from "@/context/WishlistContext";
 import { Product } from "@/services/productService";
 import { colors } from "@/utils/theme";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,15 +14,36 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
     const router = useRouter();
+    const { toggleWishlist, isInWishlist } = useWishlist();
+    const isFavorite = isInWishlist(product.id);
+
+    const handleWishlistToggle = async (e: any) => {
+        e.stopPropagation();
+        await toggleWishlist(product.id);
+    };
 
     return (
-        <TouchableOpacity style={styles.productCard} onPress={() => router.push(`/shop/product/${product.id}`)}>
+        <TouchableOpacity
+            style={styles.productCard}
+            onPress={() => router.push(`/shop/product/${product.id}`)}
+            activeOpacity={0.9}
+        >
             <View style={styles.productImageContainer}>
                 <Image source={{ uri: product.image }} style={styles.productImage} />
-                <TouchableOpacity style={styles.wishlistButton}>
-                    <Ionicons name="heart-outline" size={18} color={colors.navy} />
+
+                <TouchableOpacity
+                    style={styles.wishlistButton}
+                    onPress={handleWishlistToggle}
+                    activeOpacity={0.7}
+                >
+                    <Ionicons
+                        name={isFavorite ? "heart" : "heart-outline"}
+                        size={18}
+                        color={isFavorite ? "#ff4757" : colors.navy}
+                    />
                 </TouchableOpacity>
             </View>
+
             <View style={styles.productInfo}>
                 <Text style={styles.productCategory}>{product.category}</Text>
                 <Text style={styles.productName} numberOfLines={1}>
@@ -64,6 +86,11 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(255, 255, 255, 0.9)",
         alignItems: "center",
         justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
     },
     productInfo: {
         paddingTop: 12,
