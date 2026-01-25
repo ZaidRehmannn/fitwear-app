@@ -101,6 +101,13 @@ export default function TabLayout() {
                     ),
                 }}
             />
+
+            <Tabs.Screen
+                name="profile/wishlist/index"
+                options={{
+                    href: null,
+                }}
+            />
         </Tabs>
     );
 }

@@ -63,7 +63,7 @@ const ProductDetail = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ProductHeader
-                onBack={() => router.back()}
+                onBack={() => router.replace("/shop")}
                 isWishlisted={isWishlisted}
                 onToggleWishlist={handleToggleWishlist}
             />

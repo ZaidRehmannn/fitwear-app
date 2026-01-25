@@ -5,10 +5,11 @@ import ProfileCard from "@/components/profile/ProfileCard";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import StatsSection from "@/components/profile/StatsSection";
 import { useAuth } from "@/context/AuthContext";
+import { useWishlist } from "@/context/WishlistContext";
 import { useImagePicker } from "@/hooks/useImagePicker";
 import { useUser } from "@/hooks/useUser";
 import { logoutUser } from "@/services/authService";
-import { MENU_ITEMS, USER_STATS } from "@/utils/data/profileData";
+import { MENU_ITEMS } from "@/utils/data/profileData";
 import { formatDate } from "@/utils/helpers";
 import { showToast } from "@/utils/toast";
 import { useRouter } from "expo-router";
@@ -22,6 +23,12 @@ const Profile = () => {
     const { updateName, updatePicture, removePicture } = useUser();
     const [isUploading, setIsUploading] = useState(false);
     const { pickImage } = useImagePicker();
+    const { wishlist } = useWishlist();
+
+    const userStats = [
+        { label: "Orders", value: "0" },
+        { label: "Wishlist", value: wishlist.length.toString() }
+    ];
 
     const handleMenuItemPress = (route: string) => {
         router.push(route as any);
@@ -109,7 +116,7 @@ const Profile = () => {
                     isUploading={isUploading}
                 />
 
-                <StatsSection stats={USER_STATS} />
+                <StatsSection stats={userStats} />
 
                 <MenuList
                     items={MENU_ITEMS}
