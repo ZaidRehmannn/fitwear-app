@@ -16,7 +16,7 @@ const WishlistScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <WishlistHeader
-                onBack={() => router.replace("/profile")}
+                onBack={() => router.replace("/(tabs)/profile")}
                 count={products.length}
             />
 

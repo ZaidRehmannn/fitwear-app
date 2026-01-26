@@ -11,7 +11,12 @@ export default function RootLayout() {
       <WishlistProvider>
         <CategoryProvider>
           <CartProvider>
-            <Stack screenOptions={{ headerShown: false }} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(auth)" options={{ animation: 'fade' }} />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="(app)" options={{ animation: 'slide_from_right' }} />
+            </Stack>
             <Toast />
           </CartProvider>
         </CategoryProvider>

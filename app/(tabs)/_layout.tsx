@@ -62,13 +62,6 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="shop/product/[id]"
-                options={{
-                    href: null,
-                }}
-            />
-
-            <Tabs.Screen
                 name="cart/index"
                 options={{
                     title: 'Cart',
@@ -99,13 +92,6 @@ export default function TabLayout() {
                             />
                         </View>
                     ),
-                }}
-            />
-
-            <Tabs.Screen
-                name="profile/wishlist/index"
-                options={{
-                    href: null,
                 }}
             />
         </Tabs>

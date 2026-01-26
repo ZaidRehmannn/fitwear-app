@@ -10,7 +10,7 @@ import { useProduct } from "@/hooks/useProduct";
 import { showToast } from "@/utils/toast";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProductDetail = () => {
@@ -63,7 +63,7 @@ const ProductDetail = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ProductHeader
-                onBack={() => router.replace("/shop")}
+                onBack={() => router.replace("/(tabs)/shop")}
                 isWishlisted={isWishlisted}
                 onToggleWishlist={handleToggleWishlist}
             />
@@ -93,8 +93,6 @@ const ProductDetail = () => {
                     onAddToCart={handleAddToCart}
                     disabled={added}
                 />
-
-                <View style={styles.bottomSpacer} />
             </ScrollView>
         </SafeAreaView>
     );
@@ -106,9 +104,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-    },
-    bottomSpacer: {
-        height: 70,
     },
     center: {
         flex: 1,
