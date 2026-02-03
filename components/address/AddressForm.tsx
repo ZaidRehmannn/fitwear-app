@@ -1,13 +1,7 @@
 import { colors } from '@/utils/theme';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
-const ADDRESS_TYPES = [
-    { label: 'Home', icon: 'home-outline' },
-    { label: 'Office', icon: 'briefcase-outline' },
-    { label: 'Other', icon: 'location-outline' },
-];
+import React, { useState } from 'react';
+import { ActivityIndicator, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     selectedType: string;
@@ -15,46 +9,129 @@ interface Props {
     address: string;
     customName: string;
     setCustomName: (text: string) => void;
+    onLocationSelect: (data: any, details: any) => void;
 }
 
-const AddressForm = ({ selectedType, onTypeSelect, address, customName, setCustomName }: Props) => (
-    <View style={styles.content}>
-        <Text style={styles.sectionLabel}>Select Address Type</Text>
-        <View style={styles.typeRow}>
-            {ADDRESS_TYPES.map((type) => (
-                <TouchableOpacity
-                    key={type.label}
-                    style={[styles.typeBtn, selectedType === type.label && styles.typeBtnActive]}
-                    onPress={() => onTypeSelect(type.label)}
-                >
-                    <Ionicons name={type.icon as any} size={20} color={selectedType === type.label ? '#fff' : colors.navy} />
-                    <Text style={[styles.typeText, selectedType === type.label && styles.typeTextActive]}>{type.label}</Text>
-                </TouchableOpacity>
-            ))}
-        </View>
+const AddressForm = ({
+    selectedType,
+    onTypeSelect,
+    address,
+    customName,
+    setCustomName,
+    onLocationSelect
+}: Props) => {
+    const [searchText, setSearchText] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [searching, setSearching] = useState(false);
 
-        <Text style={styles.sectionLabel}>Full Address</Text>
-        <View style={styles.addressBox}>
-            <Ionicons name="map-outline" size={20} color={colors.cyan} />
-            <Text style={styles.addressText}>{address}</Text>
-        </View>
+    const searchLocation = async (text: string) => {
+        setSearchText(text);
+        if (text.length < 3) {
+            setSearchResults([]);
+            return;
+        }
 
-        <Text style={styles.sectionLabel}>Additional Info (Optional)</Text>
-        <TextInput
-            style={styles.input}
-            placeholder="Flat / Building / Landmark"
-            value={customName}
-            onChangeText={setCustomName}
-            placeholderTextColor="#A0AEC0"
-        />
-    </View>
-);
+        setSearching(true);
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(text)}&addressdetails=1&limit=5`,
+                { headers: { 'User-Agent': 'fit_wear_app' } }
+            );
+            const data = await response.json();
+            setSearchResults(data);
+        } catch (error) {
+            console.error("Search error:", error);
+        } finally {
+            setSearching(false);
+        }
+    };
+
+    const handleSelect = (item: any) => {
+        const details = {
+            geometry: {
+                location: {
+                    lat: parseFloat(item.lat),
+                    lng: parseFloat(item.lon),
+                }
+            }
+        };
+        const data = { description: item.display_name };
+
+        onLocationSelect(data, details);
+        setSearchResults([]);
+        setSearchText('');
+
+        Keyboard.dismiss();
+    };
+
+    return (
+        <View style={styles.content}>
+            <Text style={styles.sectionLabel}>Search Location</Text>
+            <View style={styles.searchContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Search area or street..."
+                    value={searchText}
+                    onChangeText={searchLocation}
+                    placeholderTextColor="#A0AEC0"
+                    returnKeyType="search"
+                    onSubmitEditing={Keyboard.dismiss}
+                />
+                {searching && <ActivityIndicator style={styles.loader} color={colors.cyan} />}
+            </View>
+
+            {searchResults.length > 0 && (
+                <View style={styles.suggestionList}>
+                    {searchResults.map((item: any, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.resultItem}
+                            onPress={() => handleSelect(item)}
+                        >
+                            <Ionicons name="location-outline" size={18} color={colors.navy} />
+                            <Text style={styles.resultText} numberOfLines={2}>{item.display_name}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            )}
+
+            <Text style={styles.sectionLabel}>Select Address Type</Text>
+            <View style={styles.typeRow}>
+                {['Home', 'Office', 'Other'].map((label) => (
+                    <TouchableOpacity
+                        key={label}
+                        style={[styles.typeBtn, selectedType === label && styles.typeBtnActive]}
+                        onPress={() => onTypeSelect(label)}
+                    >
+                        <Text style={[styles.typeText, selectedType === label && styles.typeTextActive]}>{label}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
+
+            <Text style={styles.sectionLabel}>Selected Address</Text>
+            <View style={styles.addressBox}>
+                <Text style={styles.addressText}>{address}</Text>
+            </View>
+
+            <Text style={styles.sectionLabel}>Building / Flat No.</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Enter details..."
+                value={customName}
+                onChangeText={setCustomName}
+                returnKeyType="done"
+                onSubmitEditing={Keyboard.dismiss}
+            />
+        </View>
+    );
+};
 
 export default AddressForm;
 
 const styles = StyleSheet.create({
     content: {
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        zIndex: 10
     },
     sectionLabel: {
         fontSize: 14,
@@ -63,28 +140,62 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10
     },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    input: {
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: 15,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#E2E8F0'
+    },
+    loader: {
+        position: 'absolute',
+        right: 15
+    },
+    suggestionList: {
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        marginTop: 5,
+        borderWidth: 1,
+        borderColor: '#E2E8F0',
+        maxHeight: 200,
+        overflow: 'hidden'
+    },
+    resultItem: {
+        flexDirection: 'row',
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#F1F5F9',
+        alignItems: 'center',
+        gap: 10
+    },
+    resultText: {
+        fontSize: 13,
+        color: '#4A5568',
+        flex: 1
+    },
     typeRow: {
         flexDirection: 'row',
         gap: 10
     },
     typeBtn: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 6,
-        paddingVertical: 12,
+        padding: 12,
         borderRadius: 12,
         backgroundColor: '#fff',
         borderWidth: 1,
-        borderColor: '#E2E8F0'
+        borderColor: '#E2E8F0',
+        alignItems: 'center'
     },
     typeBtnActive: {
         backgroundColor: colors.navy,
         borderColor: colors.navy
     },
     typeText: {
-        fontSize: 13,
         fontWeight: '600',
         color: colors.navy
     },
@@ -92,25 +203,14 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     addressBox: {
-        flexDirection: 'row',
-        gap: 10,
         padding: 16,
-        backgroundColor: '#fff',
+        backgroundColor: '#F1F5F9',
         borderRadius: 12,
         borderWidth: 1,
         borderColor: '#E2E8F0'
     },
     addressText: {
-        flex: 1,
         fontSize: 14,
         color: '#4A5568'
-    },
-    input: {
-        backgroundColor: '#fff',
-        padding: 16,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: '#E2E8F0',
-        color: colors.navy
     },
 });
