@@ -7,13 +7,14 @@ interface OrderSummaryProps {
         discount: number;
         total: number;
     };
+    isCheckout?: boolean
 }
 
-const OrderSummary = ({ totals }: OrderSummaryProps) => {
+const OrderSummary = ({ totals, isCheckout }: OrderSummaryProps) => {
     const { subtotal, shipping, total, discount } = totals;
 
     return (
-        <View style={styles.summarySection}>
+        <View style={[styles.summarySection, { margin: isCheckout ? 0 : 20 }]}>
             <Text style={styles.summaryTitle}>Order Summary</Text>
 
             <View style={styles.summaryRow}>
@@ -55,7 +56,6 @@ export default OrderSummary;
 
 const styles = StyleSheet.create({
     summarySection: {
-        margin: 20,
         padding: 20,
         backgroundColor: "#f8fafc",
         borderRadius: 16,

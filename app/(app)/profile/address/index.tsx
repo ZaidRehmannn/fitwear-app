@@ -28,6 +28,8 @@ const AddressPicker = () => {
     const [selectedType, setSelectedType] = useState('Home');
     const [customName, setCustomName] = useState('');
 
+    const RADAR_KEY = process.env.EXPO_PUBLIC_RADAR_PUBLISHABLE_KEY;
+
     useEffect(() => {
         getCurrentLocation(true);
     }, []);
@@ -64,19 +66,31 @@ const AddressPicker = () => {
 
     const fetchAddress = async (lat: number, lng: number) => {
         try {
-            let response = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lng });
-            if (response.length > 0) {
-                const item = response[0];
-                const formattedAddress = [
-                    item.name,
-                    item.street,
-                    item.district,
-                    item.city
-                ].filter(Boolean).join(', ');
-                setAddress(formattedAddress || "Unknown Location");
+            if (!RADAR_KEY) {
+                console.warn("Radar API Key missing in .env");
+                return;
+            }
+
+            const url = `https://api.radar.io/v1/geocode/reverse?location=${lat},${lng}`;
+            const response = await fetch(url, {
+                headers: { 'Authorization': RADAR_KEY }
+            });
+            const data = await response.json();
+
+            if (data.addresses && data.addresses.length > 0) {
+                const addr = data.addresses[0];
+
+                const area = addr.neighborhood || addr.suburb || addr.district || "";
+                const street = addr.street || "";
+
+                const formatted = [street, area].filter(Boolean).join(', ');
+                setAddress(formatted || "Selected Location");
+            } else {
+                setAddress("Unknown Area");
             }
         } catch (error) {
-            console.error("Error fetching address:", error);
+            console.error("Error fetching address from Radar:", error);
+            setAddress("Error fetching address");
         }
     };
 
@@ -99,15 +113,28 @@ const AddressPicker = () => {
     };
 
     const handleConfirm = () => {
+        if (!customName.trim()) {
+            Alert.alert("Required", "Please enter House/Flat number details.");
+            return;
+        }
+
         const finalData = {
             type: selectedType,
-            address: address,
-            additionalInfo: customName,
+            // Hybrid Address: Manual Input + API Area
+            fullAddress: `${customName}, ${address}`,
+            area: address,
+            houseDetail: customName,
             coords: { lat: region.latitude, lng: region.longitude }
         };
-        console.log("Saving Address:", finalData);
+
+        console.log("Saving Final Address:", finalData);
         router.back();
     };
+
+    function onTypeSelectUpdate(type: string) {
+        setSelectedType(type);
+        Keyboard.dismiss();
+    }
 
     if (loading) return <LoadingSpinner />;
 
@@ -155,11 +182,6 @@ const AddressPicker = () => {
             </View>
         </SafeAreaView>
     );
-
-    function onTypeSelectUpdate(type: string) {
-        setSelectedType(type);
-        Keyboard.dismiss();
-    }
 };
 
 export default AddressPicker;

@@ -40,7 +40,7 @@ const Cart = () => {
                         <OrderSummary totals={totals} />
                     </ScrollView>
 
-                    <CheckoutBar onCheckout={() => console.log("Checkout")} />
+                    <CheckoutBar onCheckout={() => router.push("/(app)/checkout" as any)} />
                     <View style={styles.bottomSpacer} />
                 </>
             )}
