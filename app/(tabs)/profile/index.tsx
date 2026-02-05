@@ -7,6 +7,7 @@ import StatsSection from "@/components/profile/StatsSection";
 import { useAuth } from "@/context/AuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useImagePicker } from "@/hooks/useImagePicker";
+import { useOrders } from "@/hooks/useOrders";
 import { useUser } from "@/hooks/useUser";
 import { logoutUser } from "@/services/authService";
 import { MENU_ITEMS } from "@/utils/data/profileData";
@@ -24,9 +25,10 @@ const Profile = () => {
     const [isUploading, setIsUploading] = useState(false);
     const { pickImage } = useImagePicker();
     const { wishlist } = useWishlist();
+    const { orderCount } = useOrders();
 
     const userStats = [
-        { label: "Orders", value: "0" },
+        { label: "Orders", value: orderCount.toString() },
         { label: "Wishlist", value: wishlist.length.toString() }
     ];
 

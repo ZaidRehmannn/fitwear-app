@@ -7,7 +7,7 @@ import SavedAddresses from '@/components/checkout/SavedAddresses';
 import { useCart } from "@/context/CartContext";
 import { useCheckout } from '@/hooks/useCheckout';
 import { orderService } from '@/services/orderService';
-import { showToast } from '@/utils/toast'; // Toast utility
+import { showToast } from '@/utils/toast';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
@@ -60,8 +60,9 @@ const Checkout = () => {
             await orderService.placeOrder(orderData);
             showToast('success', 'Order placed successfully! Redirecting...');
             clearCart();
+
             setTimeout(() => {
-                router.replace("/(tabs)/home" as any);
+                router.replace("/profile/orders" as any);
             }, 2000);
 
         } catch (error) {
