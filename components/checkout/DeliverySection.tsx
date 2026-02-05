@@ -1,28 +1,64 @@
 import { colors } from '@/utils/theme';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 interface DeliverySectionProps {
-    address: string;
-    onAddressChange: (text: string) => void;
+    addressDetails: {
+        house: string;
+        area: string;
+        city: string;
+    };
+    onUpdateField: (field: string, value: string) => void;
+    saveAddress: boolean;
+    onToggleSave: (value: boolean) => void;
 }
 
-const DeliverySection = ({ address, onAddressChange }: DeliverySectionProps) => (
+const DeliverySection = ({ addressDetails, onUpdateField, saveAddress, onToggleSave }: DeliverySectionProps) => (
     <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Delivery to</Text>
-        <View style={styles.card}>
-            <Ionicons name="location" size={20} color={colors.navy} style={styles.icon} />
+        <Text style={styles.sectionTitle}>Delivery Details</Text>
 
-            <TextInput
-                style={styles.input}
-                value={address}
-                onChangeText={onAddressChange}
-                placeholder="Enter your full address..."
-                placeholderTextColor="#94A3B8"
-                multiline={true}
-                numberOfLines={2}
-                blurOnSubmit={true}
+        <View style={styles.card}>
+            <View style={styles.inputGroup}>
+                <Ionicons name="home-outline" size={18} color={colors.navy} />
+                <TextInput
+                    style={styles.input}
+                    value={addressDetails.house}
+                    onChangeText={(val) => onUpdateField('house', val)}
+                    placeholder="Flat / House No. / Building"
+                    placeholderTextColor="#94A3B8"
+                />
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.inputGroup}>
+                <Ionicons name="map-outline" size={18} color={colors.navy} />
+                <TextInput
+                    style={styles.input}
+                    value={addressDetails.area}
+                    onChangeText={(val) => onUpdateField('area', val)}
+                    placeholder="Area / Colony / Street"
+                    placeholderTextColor="#94A3B8"
+                />
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.inputGroup}>
+                <Ionicons name="business-outline" size={18} color={colors.navy} />
+                <TextInput
+                    style={styles.input}
+                    value={addressDetails.city}
+                    onChangeText={(val) => onUpdateField('city', val)}
+                    placeholder="City"
+                    placeholderTextColor="#94A3B8"
+                />
+            </View>
+        </View>
+
+        <View style={styles.saveContainer}>
+            <Text style={styles.saveText}>Save this address for future orders</Text>
+            <Switch
+                value={saveAddress}
+                onValueChange={onToggleSave}
+                trackColor={{ false: "#cbd5e1", true: colors.navy }}
             />
         </View>
     </View>
@@ -39,26 +75,40 @@ const styles = StyleSheet.create({
         color: '#1B3B5D'
     },
     card: {
-        flexDirection: 'row',
-        padding: 12,
         backgroundColor: '#F8FAFC',
         borderRadius: 12,
-        alignItems: 'flex-start',
         borderWidth: 1,
-        borderColor: '#E2E8F0'
+        borderColor: '#E2E8F0',
+        overflow: 'hidden'
     },
-    icon: {
-        marginTop: 2
+    inputGroup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 12,
+        height: 50,
     },
     input: {
-        marginLeft: 10,
         flex: 1,
+        marginLeft: 10,
         color: '#475569',
         fontSize: 14,
-        paddingTop: 0,
-        minHeight: 40,
-        textAlignVertical: 'top'
     },
+    divider: {
+        height: 1,
+        backgroundColor: '#E2E8F0',
+        marginHorizontal: 12,
+    },
+    saveContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 15,
+        paddingHorizontal: 5
+    },
+    saveText: {
+        fontSize: 13,
+        color: '#64748b'
+    }
 });
 
 export default DeliverySection;
