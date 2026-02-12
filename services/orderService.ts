@@ -2,6 +2,8 @@ import { auth, db } from '@/config/firebase';
 import {
     addDoc,
     collection,
+    doc,
+    getDoc,
     getDocs,
     limit,
     orderBy,
@@ -71,5 +73,19 @@ export const orderService = {
             userId: user.uid,
             createdAt: serverTimestamp(),
         });
+    },
+
+    async getOrderById(orderId: string) {
+        try {
+            const docRef = doc(db, "orders", orderId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                return { id: docSnap.id, ...docSnap.data() };
+            }
+            return null;
+        } catch (error) {
+            console.error("Error fetching order:", error);
+            throw error;
+        }
     }
 };

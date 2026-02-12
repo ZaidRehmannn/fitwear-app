@@ -52,6 +52,9 @@ const Checkout = () => {
 
             const orderData = {
                 items: cartItems,
+                subtotal: totals.subtotal,
+                deliveryFee: totals.shipping,
+                discount: totals.discount,
                 totalAmount: totals.subtotal + totals.shipping - totals.discount,
                 paymentMethod,
                 deliveryAddress: `${house}, ${area}, ${city}`,

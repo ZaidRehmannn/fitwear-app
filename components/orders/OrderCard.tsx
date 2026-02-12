@@ -1,9 +1,12 @@
 import { colors } from '@/utils/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const OrderCard = ({ order }: { order: any }) => {
+    const router = useRouter();
+
     const dateObj = new Date(order.createdAt);
     const date = dateObj.toLocaleDateString('en-GB', {
         day: '2-digit',
@@ -16,8 +19,16 @@ const OrderCard = ({ order }: { order: any }) => {
         hour12: true
     });
 
+    const handlePress = () => {
+        router.push(`/(app)/profile/orders/order/${order.id}` as any);
+    };
+
     return (
-        <View style={styles.card}>
+        <TouchableOpacity
+            style={styles.card}
+            onPress={handlePress}
+            activeOpacity={0.7}
+        >
             <View style={styles.topSection}>
                 <View style={styles.iconContainer}>
                     <Ionicons name="receipt" size={22} color={colors.navy} />
@@ -26,7 +37,10 @@ const OrderCard = ({ order }: { order: any }) => {
                     <Text style={styles.orderId}>Order #{order.id.slice(-6).toUpperCase()}</Text>
                     <Text style={styles.dateTime}>{date} • {time}</Text>
                 </View>
-                <Text style={styles.price}>${order.totalAmount.toLocaleString()}</Text>
+                <View style={styles.priceContainer}>
+                    <Text style={styles.price}>${order.totalAmount.toLocaleString()}</Text>
+                    <Ionicons name="chevron-forward" size={16} color="#CBD5E1" style={{ marginLeft: 4 }} />
+                </View>
             </View>
 
             <View style={styles.divider} />
@@ -46,7 +60,7 @@ const OrderCard = ({ order }: { order: any }) => {
                     </Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -60,6 +74,11 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         borderWidth: 1,
         borderColor: '#E2E8F0',
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.05,
+        shadowRadius: 2,
     },
     topSection: {
         flexDirection: 'row',
@@ -86,6 +105,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#94A3B8',
         marginTop: 2
+    },
+    priceContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     price: {
         fontSize: 16,

@@ -18,8 +18,6 @@ interface Order {
     [key: string]: any;
 }
 
-// testing
-
 const OrdersScreen = () => {
     const router = useRouter();
     const [orders, setOrders] = useState<Order[]>([]);
