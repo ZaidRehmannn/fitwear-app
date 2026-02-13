@@ -55,11 +55,14 @@ const DeliverySection = ({ addressDetails, onUpdateField, saveAddress, onToggleS
 
         <View style={styles.saveContainer}>
             <Text style={styles.saveText}>Save this address for future orders</Text>
-            <Switch
-                value={saveAddress}
-                onValueChange={onToggleSave}
-                trackColor={{ false: "#cbd5e1", true: colors.navy }}
-            />
+            <View style={styles.switch}>
+                <Switch
+                    value={saveAddress}
+                    onValueChange={onToggleSave}
+                    trackColor={{ false: "#cbd5e1", true: colors.navy }}
+                    ios_backgroundColor="#f1f5f9"
+                />
+            </View>
         </View>
     </View>
 );
@@ -108,6 +111,12 @@ const styles = StyleSheet.create({
     saveText: {
         fontSize: 13,
         color: '#64748b'
+    },
+    switch: {
+        borderWidth: 1,
+        borderColor: '#7f8388',
+        borderRadius: 16,
+        padding: 2
     }
 });
 
