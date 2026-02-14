@@ -43,7 +43,7 @@ const OrdersScreen = () => {
         <SafeAreaView style={styles.container}>
             <OrderHeader
                 title="Order History"
-                onBack={() => router.back()}
+                onBack={() => router.replace("/(tabs)/profile")}
             />
 
             {loading ? (

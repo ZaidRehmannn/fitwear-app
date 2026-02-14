@@ -87,5 +87,11 @@ export const orderService = {
             console.error("Error fetching order:", error);
             throw error;
         }
+    },
+
+    async isFirstOrder(userId: string) {
+        const q = query(collection(db, "orders"), where("userId", "==", userId), limit(1));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.empty;
     }
 };

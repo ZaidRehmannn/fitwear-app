@@ -1,5 +1,5 @@
 import { Product } from "@/services/productService";
-import { getPromoCode, PromoCode } from "@/services/promoService";
+import { PromoCode } from "@/services/promoService";
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
 export interface CartItem extends Product {
@@ -20,7 +20,8 @@ interface CartContextType {
     updateQuantity: (productId: string, delta: number) => void;
     removeFromCart: (productId: string) => void;
     cartQuantity: () => number;
-    applyPromoCode: (code: string) => Promise<void>;
+    applyPromoCode: (promo: PromoCode) => Promise<void>;
+    clearPromoCode: () => void;
     clearCart: () => void;
 }
 
@@ -78,14 +79,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return cartItems.length;
     };
 
-    const applyPromoCode = async (code: string) => {
-        const promoData = await getPromoCode(code);
-
+    const applyPromoCode = async (promo: PromoCode) => {
+        const promoData = promo;
         if (!promoData) {
             throw new Error("Invalid Promo Code!");
         }
-
         setPromo(promoData);
+    };
+
+    const clearPromoCode = () => {
+        setPromo(null);
     };
 
     const clearCart = () => {
@@ -124,6 +127,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 removeFromCart,
                 cartQuantity,
                 applyPromoCode,
+                clearPromoCode,
                 clearCart
             }}
         >

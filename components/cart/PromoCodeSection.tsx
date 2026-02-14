@@ -12,23 +12,48 @@ import {
 
 interface PromoCodeSectionProps {
     onApply: (code: string) => void;
+    onRemove?: () => void;
     loading: boolean;
     error: string | null;
     success: boolean;
+    externalCode?: string;
 }
 
-const PromoCodeSection = ({ onApply, loading, error, success }: PromoCodeSectionProps) => {
+const PromoCodeSection = ({
+    onApply,
+    onRemove,
+    loading,
+    error,
+    success,
+    externalCode
+}: PromoCodeSectionProps) => {
     const [code, setCode] = useState("");
 
+    useEffect(() => {
+        if (externalCode) {
+            setCode(externalCode);
+        }
+    }, [externalCode]);
+
     const handleApply = () => {
+        if (success && onRemove) {
+            onRemove();
+            setCode("");
+            return;
+        }
         if (!code.trim() || loading) return;
         onApply(code.trim());
+    };
+
+    const getButtonText = () => {
+        if (loading) return "Applying...";
+        if (success) return "Remove";
+        return "Apply";
     };
 
     useEffect(() => {
         if (success) {
             showToast("success", "Promo code applied successfully");
-            setCode("");
         }
     }, [success]);
 
@@ -40,29 +65,39 @@ const PromoCodeSection = ({ onApply, loading, error, success }: PromoCodeSection
 
     return (
         <View style={styles.promoSection}>
-            <View style={styles.promoInputWrapper}>
-                <Ionicons name="pricetag" size={20} color="#888" />
+            <View style={[
+                styles.promoInputWrapper,
+                success && styles.successInput
+            ]}>
+                <Ionicons
+                    name={success ? "checkmark-circle" : "pricetag"}
+                    size={20}
+                    color={success ? "#10B981" : "#888"}
+                />
                 <TextInput
                     value={code}
-                    onChangeText={setCode}
+                    onChangeText={(text) => {
+                        if (!success) setCode(text);
+                    }}
                     placeholder="Enter promo code"
                     placeholderTextColor="#888"
                     style={styles.promoInput}
                     autoCapitalize="characters"
-                    editable={!loading}
+                    editable={!loading && !success}
                 />
             </View>
 
             <TouchableOpacity
                 style={[
                     styles.applyBtn,
-                    (loading || !code.trim()) && styles.disabledBtn,
+                    (loading || !code.trim()) && !success && styles.disabledBtn,
+                    success && styles.removeBtn
                 ]}
                 onPress={handleApply}
-                disabled={loading || !code.trim()}
+                disabled={loading || (!code.trim() && !success)}
             >
                 <Text style={styles.applyBtnText}>
-                    {loading ? "Applying..." : "Apply"}
+                    {getButtonText()}
                 </Text>
             </TouchableOpacity>
         </View>
@@ -87,10 +122,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         height: 50,
         gap: 10,
+        borderWidth: 1,
+        borderColor: "transparent",
     },
-    promoPlaceholder: {
-        color: "#888",
-        fontSize: 14,
+    successInput: {
+        borderColor: "#10B981",
+        backgroundColor: "#F0FDF4",
     },
     applyBtn: {
         backgroundColor: "#1B3B5D",
@@ -99,6 +136,10 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         alignItems: "center",
         justifyContent: "center",
+        minWidth: 100,
+    },
+    removeBtn: {
+        backgroundColor: "#EF4444",
     },
     applyBtnText: {
         color: "#fff",
@@ -109,6 +150,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 14,
         color: "#1B3B5D",
+        fontWeight: "500",
     },
     disabledBtn: {
         opacity: 0.5,

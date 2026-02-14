@@ -14,7 +14,7 @@ const FeaturesBanner = () => {
             <View style={styles.featureItem}>
                 <Ionicons name="refresh-outline" size={24} color={colors.cyan} />
                 <Text style={styles.featureTitle}>Easy Returns</Text>
-                <Text style={styles.featureText}>30-day policy</Text>
+                <Text style={styles.featureText}>7-day policy</Text>
             </View>
         </View>
     );
