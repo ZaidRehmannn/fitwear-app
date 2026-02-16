@@ -2,6 +2,8 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useAuth } from "@/context/AuthContext";
 import { Redirect } from "expo-router";
 
+// testing
+
 export default function Index() {
   const { user, loading } = useAuth();
 
