@@ -27,6 +27,7 @@ export default function TabLayout() {
                 tabBarStyle: styles.tabBar,
                 tabBarLabelStyle: styles.tabBarLabel,
                 tabBarItemStyle: styles.tabBarItem,
+                tabBarHideOnKeyboard: true,
             }}
         >
             <Tabs.Screen
@@ -34,13 +35,11 @@ export default function TabLayout() {
                 options={{
                     title: 'Home',
                     tabBarIcon: ({ color, focused }) => (
-                        <View>
-                            <Ionicons
-                                name={focused ? 'home' : 'home-outline'}
-                                size={24}
-                                color={color}
-                            />
-                        </View>
+                        <Ionicons
+                            name={focused ? 'home' : 'home-outline'}
+                            size={24}
+                            color={color}
+                        />
                     ),
                 }}
             />
@@ -50,13 +49,11 @@ export default function TabLayout() {
                 options={{
                     title: 'Shop',
                     tabBarIcon: ({ color, focused }) => (
-                        <View>
-                            <Ionicons
-                                name={focused ? 'grid' : 'grid-outline'}
-                                size={24}
-                                color={color}
-                            />
-                        </View>
+                        <Ionicons
+                            name={focused ? 'grid' : 'grid-outline'}
+                            size={24}
+                            color={color}
+                        />
                     ),
                 }}
             />
@@ -84,13 +81,11 @@ export default function TabLayout() {
                 options={{
                     title: 'Profile',
                     tabBarIcon: ({ color, focused }) => (
-                        <View>
-                            <Ionicons
-                                name={focused ? 'person' : 'person-outline'}
-                                size={24}
-                                color={color}
-                            />
-                        </View>
+                        <Ionicons
+                            name={focused ? 'person' : 'person-outline'}
+                            size={24}
+                            color={color}
+                        />
                     ),
                 }}
             />
@@ -101,37 +96,34 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
     tabBar: {
         backgroundColor: tabColors.white,
-        borderTopWidth: 0,
-        height: Platform.OS === 'ios' ? 88 : 70,
-        paddingTop: 8,
-        paddingBottom: Platform.OS === 'ios' ? 28 : 12,
-        shadowColor: tabColors.navy,
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.08,
-        shadowRadius: 12,
-        elevation: 20,
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
         position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
+        left: 20,
+        right: 20,
+        bottom: Platform.OS === 'android' ? 50 : 30,
+        height: 65,
+        // borderRadius: Platform.OS === 'android' ? 0 : 30,
+        // borderTopWidth: 0,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 0, height: 5 },
+        // shadowOpacity: 0.15,
+        // shadowRadius: 10,
+        elevation: 10,
+        paddingBottom: 10,
+        paddingTop: 10,
     },
     tabBarLabel: {
-        fontSize: 11,
-        fontWeight: '600',
-        marginTop: 4,
+        fontSize: 10,
+        fontWeight: '700',
+        marginBottom: Platform.OS === 'android' ? 5 : 0,
     },
     tabBarItem: {
-        paddingTop: 4,
+        paddingVertical: 5,
     },
     badge: {
         backgroundColor: tabColors.cyan,
-        color: tabColors.navy,
+        color: tabColors.white,
         fontSize: 10,
-        fontWeight: '700',
-        minWidth: 18,
-        height: 18,
-        borderRadius: 9,
+        fontWeight: 'bold',
+        marginTop: -2,
     },
 });

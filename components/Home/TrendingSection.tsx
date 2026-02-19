@@ -1,8 +1,8 @@
+import { Product } from "@/services/productService";
 import { colors } from "@/utils/theme";
 import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native/";
 import ProductCard from "../shared/ProductCard";
-import { Product } from "@/services/productService";
 
 interface TrendingSectionProps {
     products: Product[];
@@ -10,7 +10,7 @@ interface TrendingSectionProps {
 
 const TrendingSection = ({ products }: TrendingSectionProps) => {
     const router = useRouter();
-    const trendingProducts = products.slice(0, 3);
+    const trendingProducts = products.slice(5, 9); // Just an example to get some products for the trending section
 
     return (
         <View style={styles.section}>

@@ -1,6 +1,6 @@
 import { colors } from "@/utils/theme";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 const PromoBanner = () => {
     return (
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         borderRadius: 20,
         overflow: "hidden",
-        marginBottom: 28,
+        marginBottom: Platform.OS === 'android' ? 40 : 28,
     },
     promoGradient: {
         flexDirection: "row",

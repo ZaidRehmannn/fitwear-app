@@ -8,8 +8,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const categoryIcons: Record<string, string> = {
     "men's clothing": "man-outline",
     "women's clothing": "woman-outline",
-    "electronics": "phone-portrait",
-    "jewelery": "diamond-outline",
+    "kids": "happy-outline",
+    "accessories": "watch-outline",
 };
 
 interface CategoriesProps {
