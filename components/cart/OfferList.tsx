@@ -68,7 +68,7 @@ const OfferList = ({ onSelect, currentTotal, showFirstOrder }: OfferListProps) =
 
                             {isAmountLocked && !isFirstOrderLocked && (
                                 <Text style={styles.neededText}>
-                                    Add ${offer.minAmount - currentTotal} more
+                                    Add ${(offer.minAmount - currentTotal).toFixed(2)} more
                                 </Text>
                             )}
                         </TouchableOpacity>
