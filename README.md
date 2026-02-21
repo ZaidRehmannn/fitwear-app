@@ -1,50 +1,121 @@
-# Welcome to your Expo app 👋
+# FitWear
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> Premium mobile-first E‑commerce app built with React Native & Expo.
 
-## Get started
+## Project Overview
 
-1. Install dependencies
+FitWear is a premium E‑commerce mobile application built with React Native and Expo. It focuses on a seamless, mobile-first shopping experience for Men, Women, Kids, and Accessories, backed by Firebase for authentication and data storage.
 
-   ```bash
-   npm install
-   ```
+## Key Features
 
-2. Start the app
+- 🔐 **Authentication:** Secure sign-up and login using Firebase Authentication.
+- 🛍️ **Product Discovery:** Categorized product browsing (Men, Women, Kids, Accessories) with a dedicated Shop page.
+- ❤️ **Wishlist & Cart:** Real-time state management using React Context API for favorites and cart items.
+- 🎟️ **Promotions:** Dynamic promo code system with real-time validation and formatted "amount needed" calculations to 2 decimal places.
+- 🧭 **Modern UI:** Custom floating tab bar, mobile-optimized UI with Android edge-to-edge fixes and smooth iOS behavior.
+- 🔁 **Backend:** Firebase Firestore for product/order data and Firebase Auth for user management.
 
-   ```bash
-   npx expo start
-   ```
+## Tech Stack
 
-In the output, you'll find options to open the app in a
+- Frontend: React Native + Expo (~54.0.31)
+- Routing: Expo Router (file-based routing, ~6.0.21)
+- State Management: React Context API (Auth, Cart, Wishlist, Category)
+- Backend: Firebase (Firestore, Authentication) — firebase@^12.7.0
+- Styling: React Native `StyleSheet` with a custom Cyan / Navy theme
+- Icons & Media: Ionicons, Expo Font, HD images (Unsplash / Cloudinary)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📱 App UI Showcase
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 🔐 Authentication
+<p align="center">
+  <img src="assets/ui/screenshot-1.png" width="45%" alt="Login Screen" />
+  <img src="assets/ui/screenshot-2.png" width="45%" alt="Signup Screen" />
+</p>
 
-## Get a fresh project
+### 🏠 Core Experience
+<p align="center">
+  <img src="assets/ui/screenshot-3.png" width="31%" alt="Home Screen" />
+  <img src="assets/ui/screenshot-4.png" width="31%" alt="Shop Screen" />
+  <img src="assets/ui/screenshot-5.png" width="31%" alt="Product Details" />
+</p>
 
-When you're ready, run:
+### 🛒 Shopping Flow
+<p align="center">
+  <img src="assets/ui/screenshot-6.png" width="31%" alt="Cart Screen" />
+  <img src="assets/ui/screenshot-7.png" width="31%" alt="Checkout Screen" />
+  <img src="assets/ui/screenshot-11.png" width="31%" alt="Wishlist Screen" />
+</p>
 
-```bash
-npm run reset-project
+### 📦 Orders & Management
+<p align="center">
+  <img src="assets/ui/screenshot-8.png" width="31%" alt="Order History" />
+  <img src="assets/ui/screenshot-9.png" width="31%" alt="Order Details" />
+  <img src="assets/ui/screenshot-10.png" width="31%" alt="Profile Screen" />
+</p>
+
+### 🛠️ Support
+<p align="center">
+  <img src="assets/ui/screenshot-12.png" width="45%" alt="Help & Support" />
+</p>
+
+## Environment Setup
+
+Create a top-level `.env` file to provide environment variables used by the app.
+
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN
+EXPO_PUBLIC_FIREBASE_PROJECT_ID
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+EXPO_PUBLIC_FIREBASE_APP_ID
+
+EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME
+EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Project Structure (high level)
 
-## Learn more
+Brief overview of the important folders and files:
 
-To learn more about developing your project with Expo, look at the following resources:
+- `/app` — Expo Router entry points and screen routes (file-based routing). Contains route layouts for `(auth)`, `(tabs)`, and feature screens.
+- `/components` — Reusable UI components (product cards, headers, checkout components, etc.).
+- `/context` — React Context providers: `AuthContext`, `CartContext`, `CategoryContext`, `WishlistContext`.
+- `/hooks` — Custom hooks (products, categories, checkout, image picker, user, wishlist).
+- `/services` — API-like adapters for Firebase: `authService`, `productService`, `orderService`, `wishlistService`, etc.
+- `/config` — App configuration including `config/firebase.ts` (Firebase keys & initialization).
+- `/assets` — Images, fonts and other static media.
+- `/utils` — Helpers, theme values, toast utilities and seed data.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+This structure is mobile-first and optimized for fast iteration on screens and shared components.
 
-## Join the community
+## How to Run (Development)
 
-Join our community of developers creating universal apps.
+1. Install dependencies:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm install
+```
+
+2. Start the Expo development server:
+
+```bash
+npx expo start
+```
+
+3. Run on Android/iOS simulators or devices:
+
+```bash
+npm run android   # Expo-managed Android run
+npm run ios       # Expo-managed iOS run (macOS only)
+```
+
+Notes:
+- The project uses `expo-router` — open the QR code in the Expo Go app or use a dev client for native modules.
+- For Android edge-to-edge behavior and reanimated/gesture handlers, prefer a dev client (`expo-dev-client`) when testing native integrations.
+
+## Firebase Setup
+
+1. Create a Firebase project and enable **Authentication (Email/Password)** and **Cloud Firestore**.
+2. Add your Firebase config to `/config/firebase.ts` and ensure the file exports the initialized Firebase app used by services.
+3. Secure Firestore rules appropriately for production.
