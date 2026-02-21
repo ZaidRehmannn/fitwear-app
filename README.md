@@ -17,10 +17,10 @@ FitWear is a premium E‑commerce mobile application built with React Native and
 
 ## Tech Stack
 
-- Frontend: React Native + Expo (~54.0.31)
-- Routing: Expo Router (file-based routing, ~6.0.21)
+- Frontend: React Native + Expo, TypeScript
+- Routing: Expo Router (file-based routing)
 - State Management: React Context API (Auth, Cart, Wishlist, Category)
-- Backend: Firebase (Firestore, Authentication) — firebase@^12.7.0
+- Backend: Firebase (Firestore, Authentication)
 - Styling: React Native `StyleSheet` with a custom Cyan / Navy theme
 - Icons & Media: Ionicons, Expo Font, HD images (Unsplash / Cloudinary)
 
@@ -28,34 +28,34 @@ FitWear is a premium E‑commerce mobile application built with React Native and
 
 ### 🔐 Authentication
 <p align="center">
-  <img src="./assets/ui/screenshot-1.jpeg" width="45%" alt="Login Screen" />
-  <img src="./assets/ui/screenshot-2.jpeg" width="45%" alt="Signup Screen" />
+  <img src="./assets/ui/screenshot-1.jpeg" height="400" alt="Login Screen" />
+  <img src="./assets/ui/screenshot-2.jpeg" height="400" alt="Signup Screen" />
 </p>
 
 ### 🏠 Core Experience
 <p align="center">
-  <img src="./assets/ui/screenshot-3.jpeg" width="31%" alt="Home Screen" />
-  <img src="./assets/ui/screenshot-4.jpeg" width="31%" alt="Shop Screen" />
-  <img src="./assets/ui/screenshot-5.jpeg" width="31%" alt="Product Details" />
+  <img src="./assets/ui/screenshot-3.jpeg" height="400" width="150" alt="Home Screen" />
+  <img src="./assets/ui/screenshot-4.jpeg" height="400" alt="Shop Screen" />
+  <img src="./assets/ui/screenshot-5.jpeg" height="400" alt="Product Details" />
 </p>
 
 ### 🛒 Shopping Flow
 <p align="center">
-  <img src="./assets/ui/screenshot-6.jpeg" width="31%" alt="Cart Screen" />
-  <img src="./assets/ui/screenshot-7.jpeg" width="31%" alt="Checkout Screen" />
-  <img src="./assets/ui/screenshot-8.jpeg" width="31%" alt="Wishlist Screen" />
+  <img src="./assets/ui/screenshot-6.jpeg" height="400" alt="Cart Screen" />
+  <img src="./assets/ui/screenshot-7.jpeg" height="400" alt="Checkout Screen" />
+  <img src="./assets/ui/screenshot-8.jpeg" height="400" alt="Wishlist Screen" />
 </p>
 
 ### 📦 Orders & Management
 <p align="center">
-  <img src="./assets/ui/screenshot-9.jpeg" width="31%" alt="Order History" />
-  <img src="./assets/ui/screenshot-10.jpeg" width="31%" alt="Order Details" />
-  <img src="./assets/ui/screenshot-11.jpeg" width="31%" alt="Profile Screen" />
+  <img src="./assets/ui/screenshot-9.jpeg" height="400" alt="Order History" />
+  <img src="./assets/ui/screenshot-10.jpeg" height="400" alt="Order Details" />
+  <img src="./assets/ui/screenshot-11.jpeg" height="400" alt="Profile Screen" />
 </p>
 
 ### 🛠️ Support
 <p align="center">
-  <img src="./assets/ui/screenshot-12.jpeg" width="45%" alt="Help & Support" />
+  <img src="./assets/ui/screenshot-12.jpeg" height="400" alt="Help & Support" />
 </p>
 
 ## Environment Setup
