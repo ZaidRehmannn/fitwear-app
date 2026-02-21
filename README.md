@@ -28,34 +28,34 @@ FitWear is a premium E‑commerce mobile application built with React Native and
 
 ### 🔐 Authentication
 <p align="center">
-  <img src="assets/ui/screenshot-1.png" width="45%" alt="Login Screen" />
-  <img src="assets/ui/screenshot-2.png" width="45%" alt="Signup Screen" />
+  <img src="./assets/ui/screenshot-1.jpeg" width="45%" alt="Login Screen" />
+  <img src="./assets/ui/screenshot-2.jpeg" width="45%" alt="Signup Screen" />
 </p>
 
 ### 🏠 Core Experience
 <p align="center">
-  <img src="assets/ui/screenshot-3.png" width="31%" alt="Home Screen" />
-  <img src="assets/ui/screenshot-4.png" width="31%" alt="Shop Screen" />
-  <img src="assets/ui/screenshot-5.png" width="31%" alt="Product Details" />
+  <img src="./assets/ui/screenshot-3.jpeg" width="31%" alt="Home Screen" />
+  <img src="./assets/ui/screenshot-4.jpeg" width="31%" alt="Shop Screen" />
+  <img src="./assets/ui/screenshot-5.jpeg" width="31%" alt="Product Details" />
 </p>
 
 ### 🛒 Shopping Flow
 <p align="center">
-  <img src="assets/ui/screenshot-6.png" width="31%" alt="Cart Screen" />
-  <img src="assets/ui/screenshot-7.png" width="31%" alt="Checkout Screen" />
-  <img src="assets/ui/screenshot-11.png" width="31%" alt="Wishlist Screen" />
+  <img src="./assets/ui/screenshot-6.jpeg" width="31%" alt="Cart Screen" />
+  <img src="./assets/ui/screenshot-7.jpeg" width="31%" alt="Checkout Screen" />
+  <img src="./assets/ui/screenshot-8.jpeg" width="31%" alt="Wishlist Screen" />
 </p>
 
 ### 📦 Orders & Management
 <p align="center">
-  <img src="assets/ui/screenshot-8.png" width="31%" alt="Order History" />
-  <img src="assets/ui/screenshot-9.png" width="31%" alt="Order Details" />
-  <img src="assets/ui/screenshot-10.png" width="31%" alt="Profile Screen" />
+  <img src="./assets/ui/screenshot-9.jpeg" width="31%" alt="Order History" />
+  <img src="./assets/ui/screenshot-10.jpeg" width="31%" alt="Order Details" />
+  <img src="./assets/ui/screenshot-11.jpeg" width="31%" alt="Profile Screen" />
 </p>
 
 ### 🛠️ Support
 <p align="center">
-  <img src="assets/ui/screenshot-12.png" width="45%" alt="Help & Support" />
+  <img src="./assets/ui/screenshot-12.jpeg" width="45%" alt="Help & Support" />
 </p>
 
 ## Environment Setup
